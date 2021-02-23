@@ -11,13 +11,13 @@
 
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <!-- VENDOR CSS -->
-<link rel="stylesheet" href="{{ ('assets_admin/vendor/bootstrap/css/bootstrap.min.css') }}">
-<link rel="stylesheet" href="{{ ('assets_admin/vendor/animate-css/animate.min.css') }}">
-<link rel="stylesheet" href="{{ ('assets_admin/vendor/font-awesome/css/font-awesome.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets_admin/vendor/bootstrap/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{  asset('assets_admin/vendor/animate-css/animate.min.css') }}">
+<link rel="stylesheet" href="{{  asset('assets_admin/vendor/font-awesome/css/font-awesome.min.css') }}">
 
 <!-- MAIN CSS -->
-<link rel="stylesheet" href="{{ ('assets_admin/css/main.css') }}">
-<link rel="stylesheet" href="{{ ('assets_admin/css/color_skins.css') }}">
+<link rel="stylesheet" href="{{  asset('assets_admin/css/main.css') }}">
+<link rel="stylesheet" href="{{  asset('assets_admin/css/color_skins.css') }}">
 </head>
 
 <body class="theme-blue">
@@ -30,12 +30,12 @@
                     <div class="auth-left">
                         <div class="left-top">
                             <a href="index.html">
-                                <img src="{{ ('images/logo-tabalong.png') }}" alt="E-SPPD">
+                                <img src="{{  asset('images/logo-tabalong.png') }}" alt="E-SPPD">
                                 <span>E-SPPD</span>
                             </a>
                         </div>
                         <div class="left-slider">
-                            <img src="{{ ('assets_admin/images/login/3.jpg') }}" class="img-fluid" style="margin-top: -98px;" alt="">
+                            <img src="{{  asset('assets_admin/images/login/3.jpg') }}" class="img-fluid" style="margin-top: -98px;" alt="">
                         </div>
                     </div>
                     <div class="auth-right">

@@ -39,6 +39,9 @@
                     @if(session('role_name') == 'Admin SKPD')
                         @include('layouts.menu.menu_adminskpd')
                     @endif
+                    @if(session('role_name') == 'Pegawai')
+                        @include('layouts.menu.menu_pegawai')
+                    @endif
                 @else
                 <li>
                     <a href="{{ url('/logout') }}" class="logout-trigger">

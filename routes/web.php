@@ -70,3 +70,21 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
 
 
 });
+
+
+Route::group(['middleware' => ['web','role:Pegawai']] , function() {
+    Route::namespace('Pegawai\Master')->group(function () {
+
+      Route::get('user/jenissurat/data','JenisSuratPegawaiController@data')->name('pegawaijenissurat.data');
+      Route::resource('user/jenissurat','JenisSuratPegawaiController', ['as' => 'pegawai']);
+
+      Route::get('user/dasarsurat/data','DasarPegawaiController@data')->name('pegawaidasarsurat.data');
+      Route::resource('user/dasarsurat','DasarPegawaiController', ['as' => 'pegawai']);
+    });
+
+    Route::namespace('Pegawai')->group(function () {
+      Route::resource('user/notadinas','NotaDinasPegawaiController',['as' => 'pegawai']);
+    });
+
+
+  });
