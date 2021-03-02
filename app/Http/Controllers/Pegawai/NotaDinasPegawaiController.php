@@ -76,8 +76,18 @@ class NotaDinasPegawaiController extends Controller
     public function rulesCreate()
     {
         $rules = [
-            // 'peraturan' => 'required',
-            // 'tentang' =>'required'
+            'notadinas_kepada' => 'required',
+            'notadinas_dari' =>'required',
+            'notadinas_tanggal' =>'required',
+            'notadinas_jenissurat' =>'required',
+            'notadinas_format' =>'required',
+            'notadinas_hal' =>'required',
+            'notadinas_isi' =>'required',
+            'notadinas_tujuan' =>'required',
+            'notadinas_tanggaldari' =>'required',
+            'notadinas_tanggalsampai' =>'required',
+            'notadinas_anggaran' =>'required',
+            'notadinas_disposisi1' =>'required',
 
         ];
 
@@ -87,8 +97,18 @@ class NotaDinasPegawaiController extends Controller
     public function messages()
     {
         return [
-            // 'peraturan.required' => 'Peraturan Wajib Diisi.',
-            // 'tentang.required' =>'Kolom Tentang Wajib diisi'
+            'notadinas_kepada.required' => 'Tujuan Surat Harus Diisi',
+            'notadinas_dari.required' =>'Pengirim Surat Harus Diisi',
+            'notadinas_tanggal.required' =>'Tanggal Surat Harus Diisi',
+            'notadinas_jenissurat.required' =>'Jenis Surat Harus Diisi',
+            'notadinas_format.required' =>'Format Nomor Surat Harus Diisi',
+            'notadinas_hal.required' =>'Perihal Surat Harus Diisi',
+            'notadinas_isi.required' =>'Isi Surat Tidak Boleh Kosong',
+            'notadinas_tujuan.required' =>'Tujuan Surat Tidak Boleh kosong',
+            'notadinas_tanggaldari.required' =>'Tanggal Berangkat Harus Diisi',
+            'notadinas_tanggalsampai.required' =>'Tanggal Sampai Harus Diisi',
+            'notadinas_anggaran.required' =>'Anggaran Harus Diisi',
+            'notadinas_disposisi1.required' =>'Pendisposisi Harus Diisi',
 
         ];
     }

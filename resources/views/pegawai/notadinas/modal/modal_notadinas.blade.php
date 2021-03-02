@@ -60,7 +60,7 @@
                           ​<textarea id="notadinas_tujuan" name="notadinas_tujuan" rows="2" cols="53"></textarea><br>
 
                           <label for="notadinas_tanggaldari">Dari Tanggal</label>
-                          <input class="form-control" type="date" id="notadinas_tanggaldari" name="notadinas_tanggaldari">
+                          <input class="form-control" type="date" id="notadinas_tanggaldari" name="notadinas_tanggaldari"><br>
 
                           <label for="notadinas_tanggalsampai">Sampai Tanggal</label>
                           <input class="form-control" type="date" id="notadinas_tanggalsampai" name="notadinas_tanggalsampai"><br>
@@ -72,7 +72,7 @@
                             <div class="input-group mb-1">
                               <select class="form-control select-jabatan" name="notadinas_disposisi1" id="notadinas_disposisi1">
                               </select>
-                            </div>
+                            </div><br>
 
                             <b>Pendisposisi Kedua</b>
                             <div class="input-group mb-1">

@@ -63,7 +63,7 @@
                                             <thead>
                                                 <tr class="text-center">
                                                     <th width="5">No.</th>
-                                                    <th>Kepada</th>
+                                                    <th>Tujuan Surat</th>
                                                     {{-- <th>Dari</th> --}}
                                                     <th>Jenis</th>
                                                     <th>Nomor</th>
