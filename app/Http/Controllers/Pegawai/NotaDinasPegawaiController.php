@@ -76,8 +76,8 @@ class NotaDinasPegawaiController extends Controller
     public function rulesCreate()
     {
         $rules = [
-            'notadinas_kepada' => 'required',
-            'notadinas_dari' =>'required',
+            'notadinas_kepada' => 'required_without:id',
+            'notadinas_dari' =>'required_without:id',
             'notadinas_tanggal' =>'required',
             'notadinas_jenissurat' =>'required',
             'notadinas_format' =>'required',
@@ -87,7 +87,7 @@ class NotaDinasPegawaiController extends Controller
             'notadinas_tanggaldari' =>'required',
             'notadinas_tanggalsampai' =>'required',
             'notadinas_anggaran' =>'required',
-            'notadinas_disposisi1' =>'required',
+            'notadinas_disposisi1' =>'required_without:id',
 
         ];
 
@@ -97,7 +97,7 @@ class NotaDinasPegawaiController extends Controller
     public function messages()
     {
         return [
-            'notadinas_kepada.required' => 'Tujuan Surat Harus Diisi',
+            'notadinas_kepada.required_without:id' => 'Tujuan Surat Harus Diisi',
             'notadinas_dari.required' =>'Pengirim Surat Harus Diisi',
             'notadinas_tanggal.required' =>'Tanggal Surat Harus Diisi',
             'notadinas_jenissurat.required' =>'Jenis Surat Harus Diisi',
@@ -183,8 +183,11 @@ class NotaDinasPegawaiController extends Controller
             ->leftJoin('tb_jabatan AS A','A.jabatan_id','=','sppd_notadinas.kepada')
             ->leftJoin('tb_jabatan AS B','B.jabatan_id','=','sppd_notadinas.disposisi1')
             ->leftJoin('tb_jabatan AS C','C.jabatan_id','=','sppd_notadinas.disposisi2')
-            ->select('A.jabatan_nama as jabatan_kepada', 'B.jabatan_nama as jabatan_disposisi1', 'C.jabatan_nama as jabatan_disposisi2', 'id', 'kepada', 'tanggal_surat', 'jenis_surat'
+            ->leftJoin('tb_jabatan AS D','D.jabatan_id','=','sppd_notadinas.penandatangan')
+
+            ->select('A.jabatan_nama as jabatan_kepada', 'B.jabatan_nama as jabatan_disposisi1', 'C.jabatan_nama as jabatan_disposisi2','D.jabatan_nama as jabatan_dari', 'id', 'kepada', 'tanggal_surat', 'jenis_surat'
             ,'format_nomor','lampiran','hal','isi','tujuan','tanggal_dari','tanggal_sampai','anggaran')
+
             // ->leftJoin('tb_jabatan AS B','sppd_notadinas.disposisi1','=','B.jabatan_id')
             // ->leftJoin('tb_jabatan AS C','sppd_notadinas.disposisi2','=','C.jabatan_id')
 
@@ -194,24 +197,51 @@ class NotaDinasPegawaiController extends Controller
             ->where('id', $id)
             ->first();
 
-        dd($db);
+        // dd($db);
         echo json_encode($db);
     }
 
     public function update(Request $request, $id)
     {
-        $cek = Dasar::where('peraturan', $request['peraturan'])->first();
+        $user = auth()->user();
+        $date = Carbon::now()->format('Y');
 
-        if($cek != NULL && $cek->id != $id) {
-            return response()->json(['code'=>400, 'status' => 'Maaf Dasar Surat Sudah Ada'], 200);
-        } else {
-            $db = Dasar::find($id);
-            $db->peraturan = $request['peraturan'];
-            $db->tentang = $request['tentang'];
+            $db = NotaDinas::find($id);
+            $db->tanggal_surat = $request['notadinas_tanggal'];
+            $db->jenis_surat = $request['notadinas_jenissurat'];
+            $db->format_nomor = $request['notadinas_format'];
+            $db->lampiran = $request['notadinas_lampiran'];
+            $db->hal = $request['notadinas_hal'];
+            $db->isi = $request['notadinas_isi'];
+            $db->tujuan = $request['notadinas_tujuan'];
+            $db->tanggal_dari = $request['notadinas_tanggaldari'];
+            $db->tanggal_sampai = $request['notadinas_tanggalsampai'];
+            $db->anggaran = $request['notadinas_anggaran'];
+            $db->pembuat = $user->pegawai_id;
+            $db->skpd = $user->skpd_id;
+            $db->tahun = $date;
+
+            if (!empty($request['notadinas_dari'])) {
+                $db->penandatangan = $request['notadinas_dari'];
+            }
+
+            if (!empty($request['notadinas_kepada'])) {
+                $db->kepada = $request['notadinas_kepada'];
+
+            }
+
+            if (!empty($request['notadinas_disposisi1'])) {
+                $db->disposisi1 = $request['notadinas_disposisi1'];
+            }
+
+            if (!empty($request['notadinas_disposisi2'])) {
+                $db->disposisi2 = $request['notadinas_disposisi2'];
+            }
+
 
             $db->update();
             return response()->json(['code'=>200, 'status' => 'Dasar Surat Berhasil Disimpan'], 200);
-        }
+
     }
 
     public function destroy($id)

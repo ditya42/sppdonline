@@ -108,12 +108,13 @@
         function addform() {
             save_method = "add";
             $('input[name=_method]').val('POST');
-            $('#modalnotadinas').modal('show');
-
             $('#modalnotadinas form')[0].reset();
-
+            $('#modalnotadinas').modal('show');
             $('.title').text('Pengajuan Nota Dinas');
             $('.kepada').text('Tujuan Surat');
+            $('.dari').text('Dari');
+            $('.disposisi1').text('Pejabat Pemberi Disposisi');
+            $('.disposisi2').text('Pejabat Pemberi Disposisi');
             $('#simpan').show();
             $('#loading').hide();
         }
@@ -209,15 +210,30 @@
 
                 $('.title').text('Edit Pengajuan Nota Dinas');
 
+                $('#label_kepada').text('Tujuan Surat : '+data.jabatan_kepada);
                 $('.kepada').text('Ganti Tujuan Surat');
 
+                $('#label_dari').text('Pengirim Surat: '+data.jabatan_dari);
+                $('.dari').text('Ganti Pengirim Surat');
+
+                $('#label_disposisi1').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi1);
+                $('.disposisi1').text('Ganti Pejabat Pemberi Disposisi');
+
+                $('#label_disposisi2').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi2);
+                $('.disposisi2').text('Ganti Pejabat Pemberi Disposisi');
+
+
                 $('#id').val(data.id);
-                $('#notadinas_kepada').val(data.kepada).trigger('change');
+                $('#notadinas_kepada').val(data.jabatan_kepada).trigger('change');
+                $('#notadinas_dari').val(data.jabatan_dari).trigger('change');
+                $('#notadinas_disposisi1').val(data.jabatan_disposisi1).trigger('change');
+                $('#notadinas_disposisi2').val(data.jabatan_disposisi2).trigger('change');
+
                 $('#notadinas_tanggal').val(data.tanggal_surat);
                 $('#notadinas_jenissurat').val(data.jenis_surat);
                 $('#notadinas_format').val(data.format_nomor);
                 $('#notadinas_lampiran').val(data.lampiran);
-                $('#notadinas_hal').val(data.Hal);
+                $('#notadinas_hal').val(data.hal);
                 $('#notadinas_isi').val(data.isi);
                 $('#notadinas_tujuan').val(data.tujuan);
                 $('#notadinas_tanggaldari').val(data.tanggal_dari);
@@ -273,7 +289,7 @@
     $(function() {
     $('.select-pegawai').select2({
         allowClear: false,
-        placeholder: 'Masukan NIP Pegawai',
+        placeholder: 'Masukkan NIP Pegawai',
         minimumInputLength : 4,
         ajax: {
           url: '{{ url('user/notadinas/apipegawai/') }}',
@@ -302,7 +318,7 @@
 $(function() {
     $('.select-jabatan').select2({
         allowClear: false,
-        placeholder: 'Masukan Jabatan PNS',
+        placeholder: 'Masukkan Jabatan PNS',
         minimumInputLength : 4,
         ajax: {
           url: '{{ url('user/notadinas/apijabatan/') }}',

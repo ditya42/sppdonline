@@ -14,16 +14,19 @@
 
                         <div class="col-md-12">
 
-                            <label class="kepada" id="label_kepada"></label>
+                            <label id="label_kepada"></label><br>
+                            <label class="kepada"></label>
                             <div class="input-group mb-1">
                               <select class="form-control select-jabatan" name="notadinas_kepada" id="notadinas_kepada">
                               </select>
                             </div><br>
 
 
-                            <b>Dari</b>
+                            <label id="label_dari"></label><br>
+                            <label class="dari"></label>
+
                             <div class="input-group mb-1">
-                              <select class="form-control select-pegawai" name="notadinas_dari" id="notadinas_dari">
+                              <select class="form-control select-jabatan" name="notadinas_dari" id="notadinas_dari">
                               </select>
                             </div><br>
 
@@ -57,7 +60,7 @@
                           ​<textarea id="notadinas_isi" name="notadinas_isi" rows="5" cols="53"></textarea><br>
 
                           <label>Tujuan Perjalanan</label>
-                          ​<textarea id="notadinas_tujuan" name="notadinas_tujuan" rows="2" cols="53"></textarea><br>
+                          ​<textarea id="notadinas_tujuan" name="notadinas_tujuan" rows="2" cols="53"></textarea><br><br>
 
                           <label for="notadinas_tanggaldari">Dari Tanggal</label>
                           <input class="form-control" type="date" id="notadinas_tanggaldari" name="notadinas_tanggaldari"><br>
@@ -66,15 +69,18 @@
                           <input class="form-control" type="date" id="notadinas_tanggalsampai" name="notadinas_tanggalsampai"><br>
 
                           <label>Anggaran yang dipakai</label>
-                          ​<textarea id="notadinas_anggaran" name="notadinas_anggaran" rows="2" cols="53"></textarea><br>
+                          ​<textarea id="notadinas_anggaran" name="notadinas_anggaran" rows="2" cols="53"></textarea><br><br>
 
-                          <b>Pendisposisi Pertama</b>
+                          <label id="label_disposisi1"></label><br>
+                          <label class="disposisi1"></label>
                             <div class="input-group mb-1">
                               <select class="form-control select-jabatan" name="notadinas_disposisi1" id="notadinas_disposisi1">
                               </select>
                             </div><br>
 
-                            <b>Pendisposisi Kedua</b>
+                            <label id="label_disposisi2"></label><br>
+                            <label class="disposisi2"></label>
+
                             <div class="input-group mb-1">
                               <select class="form-control select-jabatan" name="notadinas_disposisi2" id="notadinas_disposisi2">
                               </select>
@@ -89,7 +95,7 @@
                 <div class="modal-footer">
                     <button type="submit" id="simpan" class="btn btn-success">Simpan</button>
                     <button type="button" id="loading" class="btn btn-success" disabled="disabled"><i class="fa fa-refresh fa-spin"></i> <span>Loading...</span></button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" onClick="window.location.reload();">Tutup</button>
                 </div>
           </div>
         </form>
