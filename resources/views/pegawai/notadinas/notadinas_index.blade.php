@@ -264,7 +264,7 @@
       .then((willDelete) => {
         if (willDelete.value) {
             $.ajax({
-            url : "dasarsurat/"+id,
+            url : "notadinas/"+id,
             type : "POST",
             data: {
                 "_method" : "DELETE",

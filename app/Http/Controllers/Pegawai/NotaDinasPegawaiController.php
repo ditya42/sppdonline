@@ -97,7 +97,10 @@ class NotaDinasPegawaiController extends Controller
     public function messages()
     {
         return [
-            'notadinas_kepada.required_without:id' => 'Tujuan Surat Harus Diisi',
+            'notadinas_kepada.required_without' => 'Tujuan Surat Harus Diisi',
+            'notadinas_dari.required_without' => 'Harus Diisi',
+            'notadinas_disposisi1.required_without' => 'Pejabat Pemberi Disposisi Harus Diisi',
+
             'notadinas_dari.required' =>'Pengirim Surat Harus Diisi',
             'notadinas_tanggal.required' =>'Tanggal Surat Harus Diisi',
             'notadinas_jenissurat.required' =>'Jenis Surat Harus Diisi',
@@ -108,7 +111,7 @@ class NotaDinasPegawaiController extends Controller
             'notadinas_tanggaldari.required' =>'Tanggal Berangkat Harus Diisi',
             'notadinas_tanggalsampai.required' =>'Tanggal Sampai Harus Diisi',
             'notadinas_anggaran.required' =>'Anggaran Harus Diisi',
-            'notadinas_disposisi1.required' =>'Pendisposisi Harus Diisi',
+
 
         ];
     }
@@ -246,12 +249,12 @@ class NotaDinasPegawaiController extends Controller
 
     public function destroy($id)
     {
-        $cek = Dasar::where('id',$id)->first();
+        $cek = NotaDinas::where('id',$id)->first();
 
         $cek->delete();
 
         session()->flash('success', 'Data Berhasil Dihapus.');
-        return redirect()->route('adminskpd.dasarsurat.index');
+        return redirect()->route('pegawai.notadinas.index');
     }
 
 }
