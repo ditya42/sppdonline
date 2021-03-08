@@ -48,6 +48,7 @@ class PegawaiBerangkatController extends Controller
         // dd($query);
 
         return DataTables::of($query)
+
         ->editColumn('nama_gelar', function($data) {
             if($data->pegawai_gelardepan =="-" AND $data->pegawai_gelarbelakang =="-"){
                 return $data->pegawai_nama;
@@ -61,6 +62,7 @@ class PegawaiBerangkatController extends Controller
 
         })
             ->addColumn('action', function($data) {
+                // dd($data->id);
                 return '
                     <div style="color: #fff">
                         <center>
@@ -110,5 +112,15 @@ class PegawaiBerangkatController extends Controller
             $db->save();
             return response()->json(['code'=>200, 'status' => 'Pegawai Berhasil Disimpan'], 200);
 
+    }
+
+    public function destroy($id)
+    {
+        $cek = PegawaiBerangkat::where('id',$id)->first();
+
+        $cek->delete();
+
+        session()->flash('success', 'Data Berhasil Dihapus.');
+        return redirect()->back();
     }
 }

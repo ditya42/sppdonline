@@ -86,6 +86,7 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
         Route::get('user/notadinas/pegawaiberangkat/data','PegawaiBerangkatController@data')->name('pegawaiberangkat.data');
         Route::get('user/notadinas/pegawaiberangkat/{id}','PegawaiBerangkatController@index')->name('pegawaiberangkat');
         Route::post('user/notadinas/pegawaiberangkat','PegawaiBerangkatController@store')->name('pegawaiberangkat.store');
+        Route::delete('user/notadinas/pegawaiberangkat/{id}','PegawaiBerangkatController@destroy')->name('pegawaiberangkat.destroy');
 
 
         Route::get('user/notadinas/apijabatan/','NotaDinasPegawaiController@apijabatan')->name('pegawainotadinas.apijabatan');

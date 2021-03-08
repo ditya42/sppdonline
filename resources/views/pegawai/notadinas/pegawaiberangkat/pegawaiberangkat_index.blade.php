@@ -235,18 +235,20 @@
     function deleteData(id) {
       swal({
         title: "Apakah kamu yakin ?",
-        text: "Akan menghapus data ini",
+        confirmButtonText: "Akan menghapus data ini",
         icon: "warning",
         confirmButtonText: 'Hapus',
         showCancelButton: true,
 
 
-        dangerMode: true,
+
       })
       .then((willDelete) => {
         if (willDelete.value) {
             $.ajax({
-            url : "notadinas/"+id,
+            // url: "{{ route('pegawaiberangkat.destroy',"id") }}",
+
+            url : id,
             type : "POST",
             data: {
                 "_method" : "DELETE",
