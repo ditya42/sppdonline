@@ -83,10 +83,17 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
     });
 
     Route::namespace('Pegawai')->group(function () {
+        Route::get('user/notadinas/pegawaiberangkat/data','PegawaiBerangkatController@data')->name('pegawaiberangkat.data');
+        Route::get('user/notadinas/pegawaiberangkat/{id}','PegawaiBerangkatController@index')->name('pegawaiberangkat');
+        Route::post('user/notadinas/pegawaiberangkat','PegawaiBerangkatController@store')->name('pegawaiberangkat.store');
+
+
         Route::get('user/notadinas/apijabatan/','NotaDinasPegawaiController@apijabatan')->name('pegawainotadinas.apijabatan');
         Route::get('user/notadinas/apipegawai/','NotaDinasPegawaiController@apipegawai')->name('pegawainotadinas.apipegawai');
+
         Route::get('user/notadinas/data','NotaDinasPegawaiController@data')->name('pegawainotadinas.data');
         Route::resource('user/notadinas','NotaDinasPegawaiController',['as' => 'pegawai']);
+
     });
 
 

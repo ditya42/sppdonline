@@ -8,8 +8,11 @@ use App\Model\Master\JenisSurat;
 use DB;
 use Yajra\Datatables\DataTables;
 use Alert;
+
+use App\Http\Requests\RequestPegawaiBerangkat;
 use App\Model\Dasar;
 use App\Model\NotaDinas;
+use App\Model\PegawaiBerangkat;
 use App\SKPD;
 use Illuminate\Support\Facades\Auth;
 use JsValidator;
@@ -50,7 +53,7 @@ class NotaDinasPegawaiController extends Controller
                 return '
                     <div style="color: #fff">
                         <center>
-                        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
+                        <a href="' .route('pegawaiberangkat',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
                         <a href="" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
 
 
@@ -111,6 +114,7 @@ class NotaDinasPegawaiController extends Controller
             'notadinas_tanggaldari.required' =>'Tanggal Berangkat Harus Diisi',
             'notadinas_tanggalsampai.required' =>'Tanggal Sampai Harus Diisi',
             'notadinas_anggaran.required' =>'Anggaran Harus Diisi',
+
 
 
         ];
@@ -256,5 +260,9 @@ class NotaDinasPegawaiController extends Controller
         session()->flash('success', 'Data Berhasil Dihapus.');
         return redirect()->route('pegawai.notadinas.index');
     }
+
+
+
+
 
 }
