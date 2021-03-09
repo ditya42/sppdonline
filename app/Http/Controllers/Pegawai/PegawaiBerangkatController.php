@@ -104,13 +104,32 @@ class PegawaiBerangkatController extends Controller
 
     public function store(Request $request)
     {
-        //
-            $db = new PegawaiBerangkat();
-            $db->id_notadinas = $request['pegawaiberangkat_notadinas'];
-            $db->id_pegawai = $request['pegawaiberangkat_idpegawai'];
 
-            $db->save();
-            return response()->json(['code'=>200, 'status' => 'Pegawai Berhasil Disimpan'], 200);
+        $cek=DB::table('sppd_pegawaiberangkat')->where(array(
+
+            'id_notadinas' => $request['pegawaiberangkat_notadinas'],
+
+            'id_pegawai' => $request['pegawaiberangkat_idpegawai'],
+
+            ))
+
+            ->first();
+
+
+            if($cek != NULL) {
+                return response()->json(['code'=>400, 'status' => 'Data Pegawai Sudah Ada'], 200);
+            } else {
+                $db = new PegawaiBerangkat();
+                $db->id_notadinas = $request['pegawaiberangkat_notadinas'];
+                $db->id_pegawai = $request['pegawaiberangkat_idpegawai'];
+
+                $db->save();
+                return response()->json(['code'=>200, 'status' => 'Pegawai Berhasil Disimpan'], 200);
+
+            }
+
+        //
+
 
     }
 
