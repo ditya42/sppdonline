@@ -54,7 +54,7 @@ class NotaDinasPegawaiController extends Controller
                     <div style="color: #fff">
                         <center>
                         <a href="' .route('pegawaiberangkat',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
-                        <a href="" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
+                        <a href="' .route('dasarnotadinas.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
 
 
 
