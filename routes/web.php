@@ -93,9 +93,12 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
         //Dasar Surat
         Route::get('user/notadinas/dasarsurat/data','DasarNotaDinasController@data')->name('dasarnotadinas.data');
         Route::get('user/notadinas/dasarsurat/{id}','DasarNotaDinasController@index')->name('dasarnotadinas.index');
+        Route::get('user/notadinas/apidasar/','DasarNotaDinasController@apidasar')->name('dasarnotadinas.apidasar');
+        Route::post('user/notadinas/dasarsurat','DasarNotaDinasController@store')->name('dasarnotadinas.store');
 
         Route::get('user/notadinas/apijabatan/','NotaDinasPegawaiController@apijabatan')->name('pegawainotadinas.apijabatan');
         Route::get('user/notadinas/apipegawai/','NotaDinasPegawaiController@apipegawai')->name('pegawainotadinas.apipegawai');
+
 
         Route::get('user/notadinas/data','NotaDinasPegawaiController@data')->name('pegawainotadinas.data');
         Route::resource('user/notadinas','NotaDinasPegawaiController',['as' => 'pegawai']);
