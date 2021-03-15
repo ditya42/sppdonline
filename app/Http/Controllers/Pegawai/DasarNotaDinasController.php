@@ -131,4 +131,38 @@ class DasarNotaDinasController extends Controller
 
 
     }
+
+    public function storebaru(Request $request)
+    {
+
+        $cek=DB::table('sppd_dasar')->where(array(
+
+            'peraturan' => $request['dasarnotabaru_peraturan'],
+
+            ))
+
+            ->first();
+
+
+            if($cek != NULL) {
+                return response()->json(['code'=>400, 'status' => 'Dasar Surat Sudah Terdaftar'], 200);
+            } else {
+                $dasar = new Dasar();
+                $dasar->peraturan = $request['dasarnotabaru_peraturan'];
+                $dasar->tentang = $request['dasarnotabaru_tentang'];
+                $dasar->save();
+
+                $db = new DasarNota();
+                $db->id_notadinas = $request['dasarnotabaru_notadinas'];
+                $db->id_dasar = $dasar->id;
+
+                $db->save();
+                return response()->json(['code'=>200, 'status' => 'Pegawai Berhasil Disimpan'], 200);
+
+            }
+
+        //
+
+
+    }
 }

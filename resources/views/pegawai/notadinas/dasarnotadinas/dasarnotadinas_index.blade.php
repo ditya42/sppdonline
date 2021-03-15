@@ -209,6 +209,50 @@
 
 
 
+
+        $(function() {
+          $('#modaldasarnotabaru form').validator().on('submit', function(e) {
+              if(!e.isDefaultPrevented()) {
+                  $('#dasarnotabaru_simpan').hide();
+                  $('#dasarnotabaru_loading').show();
+                  var id = $('#id').val();
+                  if(save_method == "add") url = "{{ route('dasarnotadinas.storebaru') }}";
+                  else url = "dasarnota/"+id;
+
+                  $.ajax({
+                  url : url,
+                  type : "POST",
+                  data : $('#modaldasarnotabaru form').serialize(),
+                  success : function(data){
+                      if(data.code === 400) {
+                          toastr.error('Error', data.status);
+                          $('#modaldasarnotabaru').modal('hide');
+
+                      }
+
+                      if(data.code === 200) {
+                          $('#modaldasarnotabaru').modal('hide');
+                              toastr.success('Sukses', data.status, {
+                              onHidden: function () {
+                                  table.ajax.reload();
+                              }
+                          })
+
+                      }
+                  },
+                  error : function(){
+                      toastr.error('Gagal', 'Mohon Maaf Terjadi Kesalahan Pada Server');
+                      $('#modaldasarnotabaru').modal('hide');
+
+                  }
+                  });
+                  return false;
+              }
+          });
+        });
+
+
+
     function deleteData(id) {
       swal({
         title: "Apakah kamu yakin ?",
@@ -335,13 +379,7 @@ $(function() {
 
 });
 
-
-
     </script>
-
-
-
-
 
 @endsection
 
