@@ -70,7 +70,7 @@ class DasarNotaDinasController extends Controller
     public function rulesCreate()
     {
         $rules = [
-            'pegawaiberangkat_idpegawai' => 'required',
+            'dasarnotapilih_iddasar' => 'required',
 
 
         ];
@@ -81,11 +81,7 @@ class DasarNotaDinasController extends Controller
     public function messages()
     {
         return [
-            'pegawaiberangkat_idpegawai.required' => 'Pegawai Yang Berangkat Harus Diisi',
-
-
-
-
+            'dasarnotapilih_iddasar.required' => 'Dasar Surat Harus Diisi',
         ];
     }
 
