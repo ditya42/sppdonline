@@ -27,6 +27,7 @@ class DasarNotaDinasController extends Controller
 
         return view('pegawai/notadinas/dasarnotadinas/dasarnotadinas_index', [
             'JsValidator' => JsValidator::make($this->rulesCreate(), $this->messages()),
+            'JsValidator2' => JsValidator::make($this->rulesCreate2(), $this->messages2()),
             'notadinas' => $cek,
         ]);
     }
@@ -82,6 +83,28 @@ class DasarNotaDinasController extends Controller
     {
         return [
             'dasarnotapilih_iddasar.required' => 'Dasar Surat Harus Diisi',
+        ];
+    }
+
+
+
+
+    public function rulesCreate2()
+    {
+        $rules = [
+            'dasarnotabaru_peraturan' => 'required',
+            'dasarnotabaru_tentang' => 'required',
+
+        ];
+
+        return $rules;
+    }
+
+    public function messages2()
+    {
+        return [
+            'dasarnotabaru_peraturan.required' => 'Dasar Surat Harus Diisi',
+            'dasarnotabaru_tentang.required' => 'Tentang Dasar Surat Harus Diisi',
         ];
     }
 
@@ -147,9 +170,13 @@ class DasarNotaDinasController extends Controller
             if($cek != NULL) {
                 return response()->json(['code'=>400, 'status' => 'Dasar Surat Sudah Terdaftar'], 200);
             } else {
+
+                $user = auth()->user();
+
                 $dasar = new Dasar();
                 $dasar->peraturan = $request['dasarnotabaru_peraturan'];
                 $dasar->tentang = $request['dasarnotabaru_tentang'];
+                $dasar->skpd = $user->skpd_id;
                 $dasar->save();
 
                 $db = new DasarNota();

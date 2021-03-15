@@ -98,6 +98,7 @@
 @section('script')
     <script src="{{ url('vendor/jsvalidation/js/jsvalidation.min.js' , false) }}" charset="utf-8"></script>
     {!! $JsValidator->selector('#form-input-dasarnotapilih') !!}
+    {!! $JsValidator2->selector('#form-input-dasarnotabaru') !!}
 
     <script>
         var save_method;
