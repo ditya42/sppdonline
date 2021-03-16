@@ -13,6 +13,7 @@ use App\Http\Requests\RequestPegawaiBerangkat;
 use App\Model\Dasar;
 use App\Model\NotaDinas;
 use App\Model\PegawaiBerangkat;
+use App\Model\SuratKeluar;
 use App\SKPD;
 use Illuminate\Support\Facades\Auth;
 use JsValidator;
@@ -58,7 +59,7 @@ class NotaDinasPegawaiController extends Controller
 
 
 
-                            <a href="" class="btn btn-sm btn-warning"><i class="fa fa-hand-pointer-o"> Daftarkan</i></a>
+                            <a onclick="setujui('.$data->id.')" class="btn btn-sm btn-success"><i class="fa fa-hand-pointer-o"> Disetujui</i></a>
 
                             <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
 
@@ -259,6 +260,61 @@ class NotaDinasPegawaiController extends Controller
 
         session()->flash('success', 'Data Berhasil Dihapus.');
         return redirect()->route('pegawai.notadinas.index');
+    }
+
+
+    public function setujui($id)
+    {
+        $notadinas = NotaDinas::where('id',$id)->first();
+
+        //dd($notadinas);
+        if($notadinas->nomor){
+            return response()->json(['code'=>400, 'status' => 'Surat Sudah Terdaftar'], 200);
+        }
+
+        $cek = DB::table('sppd_suratkeluar')
+            ->where('tahun', '=', $notadinas->tahun)
+            ->where('skpd', '=', $notadinas->skpd)
+            ->latest()
+            ->first();
+
+            //dd($cek);
+
+        if($cek == null){
+            $db = new SuratKeluar;
+            $db->nomor = 1;
+            $db->nomor_lengkap = 1 . $notadinas->format_nomor;
+            $db->kepada = $notadinas->kepada;
+            $db->tanggal = $notadinas->tanggal_surat;
+            $db->perihal = $notadinas->Hal;
+            $db->tahun = $notadinas->tahun;
+            $db->skpd = $notadinas->skpd;
+
+
+            $db->save();
+
+            $notadinas->nomor = $db->nomor;
+            $notadinas->update();
+
+            return response()->json(['code'=>200, 'status' => 'Nota Dinas berhasil dicatat ke Buku Surat Keluar'], 200);
+        }else{
+            $db = new SuratKeluar;
+            $db->nomor = $cek->nomor+1;
+            $db->nomor_lengkap = $cek->nomor+1 . $notadinas->format_nomor;
+            $db->kepada = $notadinas->kepada;
+            $db->tanggal = $notadinas->tanggal_surat;
+            $db->perihal = $notadinas->Hal;
+            $db->tahun = $notadinas->tahun;
+            $db->skpd = $notadinas->skpd;
+
+            $db->save();
+
+            $notadinas->nomor = $db->nomor;
+            $notadinas->update();
+            return response()->json(['code'=>200, 'status' => 'Nota Dinas berhasil dicatat ke Buku Surat Keluar'], 200);
+        }
+
+
     }
 
 

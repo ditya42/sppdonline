@@ -286,6 +286,57 @@
       });
     }
 
+    function setujui(id) {
+      swal({
+        title: "Apakah Nota Dinas Ini",
+        text: "Sudah Disetujui?",
+        icon: "warning",
+        confirmButtonText: 'Ya',
+        showCancelButton: true,
+
+
+        dangerMode: true,
+      })
+      .then((terima) => {
+        if (terima.value) {
+            $.ajax({
+            url : "notadinas/setujui/"+id,
+            type : "POST",
+            data: {
+                "_method" : "GET",
+                "_token": "{{ csrf_token() }}"
+            },
+            success : function(data){
+                if(data.code === 400) {
+                    swal(data.status);
+                            table.ajax.reload();
+
+                      }
+
+                if(data.code === 200) {
+                    swal(data.status);
+                            table.ajax.reload();
+
+                      }
+
+
+
+
+            //   swal("Nota Dinas Berhasil Didaftarkan", {
+            //     icon: "success",
+            //   });
+            //   table.ajax.reload();
+            },
+            error : function() {
+              swal("Tidak Dapat Didaftarkan");
+            }
+          });
+        } else {
+          swal("Batal di Daftarkan");
+        }
+      });
+    }
+
     $(function() {
     $('.select-pegawai').select2({
         allowClear: false,

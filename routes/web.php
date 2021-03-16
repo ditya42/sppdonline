@@ -105,6 +105,9 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
         Route::get('user/notadinas/data','NotaDinasPegawaiController@data')->name('pegawainotadinas.data');
         Route::resource('user/notadinas','NotaDinasPegawaiController',['as' => 'pegawai']);
 
+        //setujui
+        Route::get('user/notadinas/setujui/{id}','NotaDinasPegawaiController@setujui')->name('pegawainotadinas.setujui');
+
     });
 
 
