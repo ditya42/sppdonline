@@ -257,7 +257,7 @@
     function deleteData(id) {
       swal({
         title: "Apakah kamu yakin ?",
-        confirmButtonText: "Akan menghapus data ini",
+        text: "Akan menghapus data ini",
         icon: "warning",
         confirmButtonText: 'Hapus',
         showCancelButton: true,

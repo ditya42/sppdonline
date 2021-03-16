@@ -39,24 +39,24 @@ class DasarNotaDinasController extends Controller
         // $query = NotaDinas::orderBy('created_at','DESC')->get();
 
         $query = DB::table('sppd_dasarnota')
-        ->leftJoin('sppd_dasar','sppd_dasar.id','=','sppd_dasarnota.id_dasar')
+        ->leftJoin('sppd_dasar','sppd_dasarnota.id_dasar','=','sppd_dasar.id')
 
         ->where('id_notadinas', $id)
-        // ->select()
+        ->select('peraturan', 'tentang', 'sppd_dasarnota.id AS sppd_id')
         ->get();
-        // dd($query);
+        //dd($query);
 
         return DataTables::of($query)
 
 
             ->addColumn('action', function($data) {
-                // dd($data->id);
+                // dd($data);
                 return '
                     <div style="color: #fff">
                         <center>
 
 
-                            <a onclick="deleteData('.$data->id.')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                            <a onclick="deleteData('.$data->sppd_id.')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
 
                         </center>
 
@@ -188,8 +188,17 @@ class DasarNotaDinasController extends Controller
 
             }
 
-        //
+    }
 
+    public function destroy($id)
+    {
+        // dd($id);
+        $cek = DasarNota::where('id',$id)->first();
+        // dd($cek);
 
+        $cek->delete();
+
+        session()->flash('success', 'Data Berhasil Dihapus.');
+        return redirect()->back();
     }
 }
