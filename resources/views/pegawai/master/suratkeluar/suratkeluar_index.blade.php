@@ -1,40 +1,5 @@
 @extends('layouts/content-menu')
 @section('content')
-
-<style>
-    .text-wrap{
-        white-space:normal;
-    }
-    .width-5{
-        width:5px;
-    }
-    .width-50{
-        width:50px;
-    }
-    .width-80{
-        width:80px;
-    }
-    .width-100{
-        width:100px;
-    }
-    .width-180{
-        width:180px;
-    }
-    .width-250{
-        width:70%;
-
-        /* text-align: justify;
-        padding-left: 0;
-        padding-right: 0;
-        margin: 0;
-        padding: 0; */
-
-    }
-    .datatable-wide{
-        margin-right: 0px;
-
-    }
-</style>
     <div id="main-content">
         <div class="container-fluid">
             <div class="block-header">
@@ -46,7 +11,7 @@
                         <ul class="breadcrumb justify-content-end">
                             <li class="breadcrumb-item"><a href="#"><i class="icon-home"></i></a></li>
                             <li class="breadcrumb-item active">Master</li>
-                            <li class="breadcrumb-item">Data Dasar Surat</li>
+                            <li class="breadcrumb-item">Data Surat Keluar </li>
                         </ul>
                     </div>
                 </div>
@@ -55,29 +20,29 @@
                 <div class="col-12">
                         <div class="card">
                             <br>
-                            {{-- <a style="margin-left: 20px;"  data-toggle="modal" onclick="addform()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah</button></a> --}}
+
                             <div class="table-responsive">
                                 <div class="body">
-                                    <div class="datatable-wide">
                                         <table class="table table-bordered table-hover js-basic-example dataTable table-custom" width="100%">
                                             <thead>
                                                 <tr class="text-center">
                                                     <th width="5">No.</th>
-                                                    <th>Dasar Surat</th>
-                                                    <th style="padding: 0px">Tentang</th>
+                                                    <th>Tujuan Surat Keluar</th>
+                                                    <th>Tanggal Surat</th>
+                                                    <th>Nomor Surat Keluar</th>
+                                                    <th>Perihal</th>
 
-                                                    {{-- <th>Aksi</th> --}}
+
                                                 </tr>
                                             </thead>
                                         </table>
-                                    </div>
                                     </div>
                             </div>
                         </div>
                 </div>
             </div>
             <!-- Modal Dialogs ========= -->
-            @include('admin_skpd.master.dasarsurat.modal.modal_dasarsurat')
+            @include('super_admin.master.jenissurat.modal.modal_jenissurat')
 
 
         </div>
@@ -88,7 +53,7 @@
   active
 @endsection
 
-@section('active-dasarsurat')
+@section('active-suratkeluar')
   active
 @endsection
 
@@ -103,10 +68,10 @@
         function addform() {
             save_method = "add";
             $('input[name=_method]').val('POST');
-            $('#modaldasarsurat').modal('show');
+            $('#modaljenissurat').modal('show');
 
-            $('#modaldasarsurat form')[0].reset();
-            $('.title').text('Tambah Dasar Surat');
+            $('#modaljenissurat form')[0].reset();
+            $('.title').text('Tambah Jenis Surat');
             $('#simpan').show();
             $('#loading').hide();
         }
@@ -115,54 +80,39 @@
           table = $('.table').DataTable({
               processing: true,
               serverSide: true,
-              ajax: '{!! route('pegawaidasarsurat.data') !!}',
+              ajax: '{!! route('pegawaisuratkeluar.data') !!}',
               columns: [
                   { data: 'DT_RowIndex', orderable: false, searchable: false},
-                  { data: 'peraturan' },
-                  { data: 'tentang' },
-
-                //   { data: 'action', actions: 'actions', orderable: false, searchable: false }
-              ],
-              columnDefs: [
-                        {
-                            render: function (data, type, full, meta) {
-                                return "<div class='text-wrap'>" + data + "</div>";
-                            },
-                            targets: 2
-                        },
-                        {
-                            render: function (data, type, full, meta) {
-                                return "<div class='text-wrap'>" + data + "</div>";
-                            },
-                            targets: 1
-                        }
-
-                ]
+                  { data: 'jabatan_nama' },
+                  { data: 'tanggal' },
+                  { data: 'nomor_lengkap' },
+                  { data: 'perihal' },
+              ]
           });
         });
 
         $(function() {
-          $('#modaldasarsurat form').validator().on('submit', function(e) {
+          $('#modaljenissurat form').validator().on('submit', function(e) {
               if(!e.isDefaultPrevented()) {
                   $('#simpan').hide();
                   $('#loading').show();
                   var id = $('#id').val();
-                  if(save_method == "add") url = "{{ route('adminskpd.dasarsurat.store') }}";
-                  else url = "dasarsurat/"+id;
+                  if(save_method == "add") url = "{{ route('adminskpd.jenissurat.store') }}";
+                  else url = "jenissurat/"+id;
 
                   $.ajax({
                   url : url,
                   type : "POST",
-                  data : $('#modaldasarsurat form').serialize(),
+                  data : $('#modaljenissurat form').serialize(),
                   success : function(data){
                       if(data.code === 400) {
                           toastr.error('Error', data.status);
-                          $('#modaldasarsurat').modal('hide');
+                          $('#modaljenissurat').modal('hide');
 
                       }
 
                       if(data.code === 200) {
-                          $('#modaldasarsurat').modal('hide');
+                          $('#modaljenissurat').modal('hide');
                               toastr.success('Sukses', data.status, {
                               onHidden: function () {
                                   table.ajax.reload();
@@ -173,7 +123,7 @@
                   },
                   error : function(){
                       toastr.error('Gagal', 'Mohon Maaf Terjadi Kesalahan Pada Server');
-                      $('#modaldasarsurat').modal('hide');
+                      $('#modaljenissurat').modal('hide');
 
                   }
                   });
@@ -187,20 +137,19 @@
             $('#simpan').show();
             $('#loading').hide();
             $('input[name=_method]').val('PATCH');
-            $('#modaldasarsurat form')[0].reset();
+            $('#modaljenissurat form')[0].reset();
             $.ajax({
-              url : "dasarsurat/"+id+"/edit",
+              url : "jenissurat/"+id+"/edit",
               type : "GET",
               dataType : "JSON",
               success : function(data){
-                $('#modaldasarsurat').modal('show');
+                $('#modaljenissurat').modal('show');
 
-                $('.title').text('Edit Dasar Surat');
+                $('.title').text('Edit Jenis Surat');
 
-                $('#id').val(data.id);
-                $('#peraturan').val(data.peraturan);
-                $('#tentang').val(data.tentang);
-                $('#skpd').val(data.skpd);
+                $('#id').val(data.jenissurat_id);
+                $('#jenissurat_nama').val(data.jenissurat_nama);
+                $('#kode_surat').val(data.kode_surat);
 
               },
               error : function(){
@@ -223,7 +172,7 @@
       .then((willDelete) => {
         if (willDelete.value) {
             $.ajax({
-            url : "dasarsurat/"+id,
+            url : "jenissurat/"+id,
             type : "POST",
             data: {
                 "_method" : "DELETE",

@@ -75,11 +75,17 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
 Route::group(['middleware' => ['web','role:Pegawai']] , function() {
     Route::namespace('Pegawai\Master')->group(function () {
 
+        //master/jenissurat
       Route::get('user/jenissurat/data','JenisSuratPegawaiController@data')->name('pegawaijenissurat.data');
       Route::resource('user/jenissurat','JenisSuratPegawaiController', ['as' => 'pegawai']);
 
+      //master//DasarSurat
       Route::get('user/dasarsurat/data','DasarPegawaiController@data')->name('pegawaidasarsurat.data');
       Route::resource('user/dasarsurat','DasarPegawaiController', ['as' => 'pegawai']);
+
+      //master/SuratKeluar
+      Route::get('user/suratkeluar/data','SuratKeluarPegawaiController@data')->name('pegawaisuratkeluar.data');
+      Route::get('user/suratkeluar','SuratKeluarPegawaiController@index')->name('pegawaisuratkeluar.index');
     });
 
     Route::namespace('Pegawai')->group(function () {

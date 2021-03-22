@@ -314,16 +314,18 @@ class NotaDinasPegawaiController extends Controller
             ->first();
 
             //dd($cek);
+        $jenissurat = JenisSurat::where('jenissurat_id',$notadinas->jenis_surat)->first();
 
         if($cek == null){
             $db = new SuratKeluar;
             $db->nomor = 1;
-            $db->nomor_lengkap = 1 . $notadinas->format_nomor;
+            $db->nomor_lengkap = $jenissurat->kode_surat . 1 . $notadinas->format_nomor;
             $db->kepada = $notadinas->kepada;
             $db->tanggal = $notadinas->tanggal_surat;
             $db->perihal = $notadinas->Hal;
             $db->tahun = $notadinas->tahun;
             $db->skpd = $notadinas->skpd;
+            $db->id_notadinas = $notadinas->id;
 
 
             $db->save();
@@ -335,12 +337,14 @@ class NotaDinasPegawaiController extends Controller
         }else{
             $db = new SuratKeluar;
             $db->nomor = $cek->nomor+1;
-            $db->nomor_lengkap = $cek->nomor+1 . $notadinas->format_nomor;
+            $cek1 = $cek->nomor+1;
+            $db->nomor_lengkap = $jenissurat->kode_surat . $cek1 . $notadinas->format_nomor;
             $db->kepada = $notadinas->kepada;
             $db->tanggal = $notadinas->tanggal_surat;
             $db->perihal = $notadinas->Hal;
             $db->tahun = $notadinas->tahun;
             $db->skpd = $notadinas->skpd;
+            $db->id_notadinas = $notadinas->id;
 
             $db->save();
 
