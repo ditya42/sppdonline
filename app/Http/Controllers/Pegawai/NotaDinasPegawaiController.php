@@ -11,6 +11,7 @@ use Alert;
 
 use App\Http\Requests\RequestPegawaiBerangkat;
 use App\Model\Dasar;
+use App\Model\DasarNota;
 use App\Model\NotaDinas;
 use App\Model\PegawaiBerangkat;
 use App\Model\SuratKeluar;
@@ -289,9 +290,21 @@ class NotaDinasPegawaiController extends Controller
     {
         $notadinas = NotaDinas::where('id',$id)->first();
 
+        $cekPNS = PegawaiBerangkat::where('id_notadinas',$id)->first();
+
+        $cekDasar = DasarNota::where('id_notadinas',$id)->first();
+
         //dd($notadinas);
         if($notadinas->nomor){
             return response()->json(['code'=>400, 'status' => 'Surat Sudah Terdaftar'], 200);
+        }
+
+        if($cekPNS == null){
+            return response()->json(['code'=>500, 'status' => 'Tidak Ada PNS Yang Berangkat'], 200);
+        }
+
+        if($cekDasar == null){
+            return response()->json(['code'=>600, 'status' => 'Tidak Ada Dasar Surat'], 200);
         }
 
         $cek = DB::table('sppd_suratkeluar')

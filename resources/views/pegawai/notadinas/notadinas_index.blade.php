@@ -341,7 +341,7 @@
 
     function setujui(id) {
       swal({
-        title: "Apakah Nota Dinas IniSudah Disetujui dan Di TandaTangani Pimpinan?",
+        title: "Apakah Nota Dinas Ini Sudah Disetujui dan Di TandaTangani Pimpinan?",
         // text: "Sudah Disetujui dan Di?",
         icon: "warning",
         confirmButtonText: 'Ya',
@@ -367,6 +367,19 @@
                       }
 
                 if(data.code === 200) {
+                    swal(data.status);
+                            table.ajax.reload();
+
+                      }
+
+
+                      if(data.code === 500) {
+                    swal(data.status);
+                            table.ajax.reload();
+
+                      }
+
+                      if(data.code === 600) {
                     swal(data.status);
                             table.ajax.reload();
 
