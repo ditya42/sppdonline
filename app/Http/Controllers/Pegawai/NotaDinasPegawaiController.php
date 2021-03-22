@@ -51,15 +51,36 @@ class NotaDinasPegawaiController extends Controller
         return DataTables::of($query)
 
             ->addColumn('action', function($data) {
+                if($data->nomor){
+
                 return '
                     <div style="color: #fff">
                         <center>
+
+                        <a href="' .route('pegawaiberangkat',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
+                        <a href="' .route('dasarnotadinas.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
+                            <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
+                            <a onclick="showForm('.$data->id.')" class="btn btn-success btn-sm"><i class="fa fa-eye"> Show</i></a>
+
+
+                        </center>
+
+                    </div>
+
+                ';
+
+                }else{
+                    return '
+                    <div style="color: #fff">
+                        <center>
+
+
                         <a href="' .route('pegawaiberangkat',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
                         <a href="' .route('dasarnotadinas.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
 
 
 
-                            <a onclick="setujui('.$data->id.')" class="btn btn-sm btn-success"><i class="fa fa-hand-pointer-o"> Disetujui</i></a>
+                            <a onclick="setujui('.$data->id.')" class="btn btn-sm btn-success"><i class="fa fa-hand-pointer-o"> Daftarkan</i></a>
 
                             <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
 
@@ -72,6 +93,7 @@ class NotaDinasPegawaiController extends Controller
                     </div>
 
                 ';
+                }
             })
             ->addIndexColumn('DT_RowIndex')
             ->toJson();

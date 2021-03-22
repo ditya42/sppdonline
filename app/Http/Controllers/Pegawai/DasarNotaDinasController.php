@@ -42,7 +42,7 @@ class DasarNotaDinasController extends Controller
         ->leftJoin('sppd_dasar','sppd_dasarnota.id_dasar','=','sppd_dasar.id')
 
         ->where('id_notadinas', $id)
-        ->select('peraturan', 'tentang', 'sppd_dasarnota.id AS sppd_id')
+        ->select('peraturan', 'tentang', 'sppd_dasarnota.id AS sppd_id', 'id_notadinas')
         ->get();
         //dd($query);
 
@@ -51,7 +51,11 @@ class DasarNotaDinasController extends Controller
 
             ->addColumn('action', function($data) {
                 // dd($data);
-                return '
+
+                $querynotadinas = NotaDinas::where('id',$data->id_notadinas)->first();
+
+                if($querynotadinas->nomor == null){
+                    return '
                     <div style="color: #fff">
                         <center>
 
@@ -63,6 +67,16 @@ class DasarNotaDinasController extends Controller
                     </div>
 
                 ';
+                }else{
+                    return '
+                    <div style="color: #fff">
+
+
+                    </div>
+
+                ';
+                }
+
             })
             ->addIndexColumn('DT_RowIndex')
             ->toJson();

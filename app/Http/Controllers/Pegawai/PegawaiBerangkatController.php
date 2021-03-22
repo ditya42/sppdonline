@@ -47,6 +47,8 @@ class PegawaiBerangkatController extends Controller
         ->get();
         // dd($query);
 
+
+
         return DataTables::of($query)
 
         ->editColumn('nama_gelar', function($data) {
@@ -63,7 +65,10 @@ class PegawaiBerangkatController extends Controller
         })
             ->addColumn('action', function($data) {
                 // dd($data->id);
-                return '
+                $querynotadinas = NotaDinas::where('id',$data->id_notadinas)->first();
+
+                if($querynotadinas->nomor == null){
+                    return '
                     <div style="color: #fff">
                         <center>
 
@@ -75,6 +80,16 @@ class PegawaiBerangkatController extends Controller
                     </div>
 
                 ';
+                }else{
+                    return '
+                    <div style="color: #fff">
+
+
+                    </div>
+
+                ';
+                }
+
             })
             ->addIndexColumn('DT_RowIndex')
             ->toJson();

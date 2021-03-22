@@ -56,8 +56,12 @@
                 <div class="col-12">
                         <div class="card">
                             <br>
+
+                            @if ($notadinas->nomor == null)
                             <a style="margin-left: 20px;"  data-toggle="modal" onclick="addformpilih()"><button type="button" class="btn btn-primary"><i class="fa fa-hand-pointer-o"></i> Pilih Dasar Surat</button></a>
                             <a style="margin-left: 10px;"  data-toggle="modal" onclick="addformbaru()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Dasar Surat Baru</button></a>
+                            @endif
+
                             <a style="margin-left: 10px;" href="{{ route('pegawai.notadinas.index') }}"><button type="button" class="btn btn-success"><i class="fa fa-backward"></i> Kembali</button></a>
                             <div class="table-responsive">
                                 <div class="body">

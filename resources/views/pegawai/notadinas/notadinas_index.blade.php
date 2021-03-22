@@ -82,6 +82,7 @@
                 </div>
             </div>
             @include('pegawai.notadinas.modal.modal_notadinas')
+            @include('pegawai.notadinas.modal.modal_notadinasshow')
 
 
 
@@ -249,6 +250,58 @@
           }
 
 
+          function showForm(id){
+            save_method = "edit";
+
+            $('#loadingshow').hide();
+            $('input[name=_method]').val('PATCH');
+            $('#modalnotadinasshow form')[0].reset();
+            $.ajax({
+              url : "notadinas/"+id+"/edit",
+              type : "GET",
+              dataType : "JSON",
+              success : function(data){
+                $('#modalnotadinasshow').modal('show');
+
+                $('.title').text('Detail Pengajuan Nota Dinas');
+
+                $('#label_kepada_show').text('Tujuan Surat : '+data.jabatan_kepada);
+
+                $('#label_dari_show').text('Pengirim Surat: '+data.jabatan_dari);
+
+                $('#label_disposisi1_show').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi1);
+
+
+                $('#label_disposisi2_show').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi2);
+
+
+
+                $('#id').val(data.id);
+                $('#notadinas_kepada_show').val(data.jabatan_kepada).trigger('change');
+                $('#notadinas_dari_show').val(data.jabatan_dari).trigger('change');
+                $('#notadinas_disposisi1_show').val(data.jabatan_disposisi1).trigger('change');
+                $('#notadinas_disposisi2_show').val(data.jabatan_disposisi2).trigger('change');
+
+                $('#notadinas_tanggal_show').val(data.tanggal_surat);
+                $('#notadinas_jenissurat_show').val(data.jenis_surat);
+                $('#notadinas_format_show').val(data.format_nomor);
+                $('#notadinas_lampiran_show').val(data.lampiran);
+                $('#notadinas_hal_show').val(data.hal);
+                $('#notadinas_isi_show').val(data.isi);
+                $('#notadinas_tujuan_show').val(data.tujuan);
+                $('#notadinas_tanggaldari_show').val(data.tanggal_dari);
+                $('#notadinas_tanggalsampai_show').val(data.tanggal_sampai);
+                $('#notadinas_anggaran_show').val(data.anggaran);
+
+
+              },
+              error : function(){
+                toastr.error('Gagal', 'Mohon Maaf Terjadi Kesalahan Pada Server');
+              }
+            });
+          }
+
+
 
     function deleteData(id) {
       swal({
@@ -288,8 +341,8 @@
 
     function setujui(id) {
       swal({
-        title: "Apakah Nota Dinas Ini",
-        text: "Sudah Disetujui?",
+        title: "Apakah Nota Dinas IniSudah Disetujui dan Di TandaTangani Pimpinan?",
+        // text: "Sudah Disetujui dan Di?",
         icon: "warning",
         confirmButtonText: 'Ya',
         showCancelButton: true,
