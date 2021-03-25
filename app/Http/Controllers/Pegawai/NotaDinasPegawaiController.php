@@ -12,6 +12,7 @@ use Alert;
 use App\Http\Requests\RequestPegawaiBerangkat;
 use App\Model\Dasar;
 use App\Model\DasarNota;
+use App\Model\Master\Jabatan;
 use App\Model\NotaDinas;
 use App\Model\PegawaiBerangkat;
 use App\Model\SuratKeluar;
@@ -313,6 +314,8 @@ class NotaDinasPegawaiController extends Controller
             ->latest()
             ->first();
 
+        $pejabat = Jabatan::where('jabatan_id',$notadinas->kepada)->first();
+
             //dd($cek);
         $jenissurat = JenisSurat::where('jenissurat_id',$notadinas->jenis_surat)->first();
 
@@ -320,12 +323,15 @@ class NotaDinasPegawaiController extends Controller
             $db = new SuratKeluar;
             $db->nomor = 1;
             $db->nomor_lengkap = $jenissurat->kode_surat . 1 . $notadinas->format_nomor;
-            $db->kepada = $notadinas->kepada;
+            $db->kepada = $pejabat->jabatan_nama;
             $db->tanggal = $notadinas->tanggal_surat;
             $db->perihal = $notadinas->Hal;
             $db->tahun = $notadinas->tahun;
             $db->skpd = $notadinas->skpd;
             $db->id_notadinas = $notadinas->id;
+            $db->format_nomor = $notadinas->format_nomor;
+            $db->jenis_surat = $notadinas->jenis_surat;
+
 
 
             $db->save();
@@ -339,12 +345,14 @@ class NotaDinasPegawaiController extends Controller
             $db->nomor = $cek->nomor+1;
             $cek1 = $cek->nomor+1;
             $db->nomor_lengkap = $jenissurat->kode_surat . $cek1 . $notadinas->format_nomor;
-            $db->kepada = $notadinas->kepada;
+            $db->kepada = $pejabat->jabatan_nama;
             $db->tanggal = $notadinas->tanggal_surat;
             $db->perihal = $notadinas->Hal;
             $db->tahun = $notadinas->tahun;
             $db->skpd = $notadinas->skpd;
             $db->id_notadinas = $notadinas->id;
+            $db->format_nomor = $notadinas->format_nomor;
+            $db->jenis_surat = $notadinas->jenis_surat;
 
             $db->save();
 

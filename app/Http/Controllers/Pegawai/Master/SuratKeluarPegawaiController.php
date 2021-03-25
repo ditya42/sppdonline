@@ -25,7 +25,6 @@ class SuratKeluarPegawaiController extends Controller
         $user = auth()->user();
         $query = DB::table('sppd_suratkeluar')
 
-        ->leftJoin('tb_jabatan','sppd_suratkeluar.kepada','=','tb_jabatan.jabatan_id')
 
         // ->orderBy('tb_skpd.skpd_nama','asc')
         ->orderBy('sppd_suratkeluar.created_at','desc')

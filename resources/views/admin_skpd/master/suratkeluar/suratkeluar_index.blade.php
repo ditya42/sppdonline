@@ -20,7 +20,7 @@
                 <div class="col-12">
                         <div class="card">
                             <br>
-
+                            <a style="margin-left: 10px;"  data-toggle="modal" onclick="addform()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Surat Keluar</button></a>
                             <div class="table-responsive">
                                 <div class="body">
                                         <table class="table table-bordered table-hover js-basic-example dataTable table-custom" width="100%">
@@ -32,6 +32,7 @@
 
                                                     <th>Nomor Surat Keluar</th>
                                                     <th>Perihal</th>
+                                                    <th>Aksi</th>
 
 
                                                 </tr>
@@ -43,7 +44,7 @@
                 </div>
             </div>
             <!-- Modal Dialogs ========= -->
-            @include('super_admin.master.jenissurat.modal.modal_jenissurat')
+            @include('admin_skpd.master.suratkeluar.modal.modal_suratkeluar')
 
 
         </div>
@@ -69,10 +70,11 @@
         function addform() {
             save_method = "add";
             $('input[name=_method]').val('POST');
-            $('#modaljenissurat').modal('show');
+            $('#modalsuratkeluar').modal('show');
 
-            $('#modaljenissurat form')[0].reset();
-            $('.title').text('Tambah Jenis Surat');
+            $('#modalsuratkeluar form')[0].reset();
+            $('.title').text('Tambah Surat Keluar');
+            $('.kepada').text('Tujuan Surat');
             $('#simpan').show();
             $('#loading').hide();
         }
@@ -81,7 +83,7 @@
           table = $('.table').DataTable({
               processing: true,
               serverSide: true,
-              ajax: '{!! route('pegawaisuratkeluar.data') !!}',
+              ajax: '{!! route('adminskpdsuratkeluar.data') !!}',
               columns: [
                   { data: 'DT_RowIndex', orderable: false, searchable: false},
                   { data: 'kepada' },
@@ -89,32 +91,34 @@
                 //   { data: 'nomor' },
                   { data: 'nomor_lengkap' },
                   { data: 'perihal' },
+
+                  { data: 'action', actions: 'actions', orderable: false, searchable: false }
               ]
           });
         });
 
         $(function() {
-          $('#modaljenissurat form').validator().on('submit', function(e) {
+          $('#modalsuratkeluar form').validator().on('submit', function(e) {
               if(!e.isDefaultPrevented()) {
                   $('#simpan').hide();
                   $('#loading').show();
                   var id = $('#id').val();
-                  if(save_method == "add") url = "{{ route('adminskpd.jenissurat.store') }}";
-                  else url = "jenissurat/"+id;
+                  if(save_method == "add") url = "{{ route('adminskpdsuratkeluar.suratkeluar.store') }}";
+                  else url = "suratkeluar/"+id;
 
                   $.ajax({
                   url : url,
                   type : "POST",
-                  data : $('#modaljenissurat form').serialize(),
+                  data : $('#modalsuratkeluar form').serialize(),
                   success : function(data){
                       if(data.code === 400) {
                           toastr.error('Error', data.status);
-                          $('#modaljenissurat').modal('hide');
+                          $('#modalsuratkeluar').modal('hide');
 
                       }
 
                       if(data.code === 200) {
-                          $('#modaljenissurat').modal('hide');
+                          $('#modalsuratkeluar').modal('hide');
                               toastr.success('Sukses', data.status, {
                               onHidden: function () {
                                   table.ajax.reload();
@@ -125,7 +129,7 @@
                   },
                   error : function(){
                       toastr.error('Gagal', 'Mohon Maaf Terjadi Kesalahan Pada Server');
-                      $('#modaljenissurat').modal('hide');
+                      $('#modalsuratkeluar').modal('hide');
 
                   }
                   });
@@ -139,19 +143,23 @@
             $('#simpan').show();
             $('#loading').hide();
             $('input[name=_method]').val('PATCH');
-            $('#modaljenissurat form')[0].reset();
+            $('#modalsuratkeluar form')[0].reset();
             $.ajax({
-              url : "jenissurat/"+id+"/edit",
+              url : "suratkeluar/"+id+"/edit",
               type : "GET",
               dataType : "JSON",
               success : function(data){
-                $('#modaljenissurat').modal('show');
+                $('#modalsuratkeluar').modal('show');
 
-                $('.title').text('Edit Jenis Surat');
+                $('.title').text('Edit Surat Keluar');
 
-                $('#id').val(data.jenissurat_id);
-                $('#jenissurat_nama').val(data.jenissurat_nama);
-                $('#kode_surat').val(data.kode_surat);
+                $('#id').val(data.id);
+                $('#suratkeluar_kepada').val(data.kepada);
+                $('#suratkeluar_tanggal').val(data.tanggal);
+                $('#suratkeluar_tanggal').val(data.tanggal);
+                $('#suratkeluar_jenissurat').val(data.jenis_surat);
+                $('#suratkeluar_format').val(data.format_nomor);
+                $('#suratkeluar_hal').val(data.perihal);
 
               },
               error : function(){
@@ -195,6 +203,8 @@
         }
       });
     }
+
+
 
 
 

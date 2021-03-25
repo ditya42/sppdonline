@@ -48,6 +48,10 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
 
     Route::get('adminskpd/dasarsurat/data','DasarAdminSKPDController@data')->name('adminskpddasarsurat.data');
     Route::resource('adminskpd/dasarsurat','DasarAdminSKPDController', ['as' => 'adminskpd']);
+
+    //master/SuratKeluar
+    Route::get('adminskpd/suratkeluar/data','SuratKeluarAdminSKPDController@data')->name('adminskpdsuratkeluar.data');
+    Route::resource('adminskpd/suratkeluar','SuratKeluarAdminSKPDController', ['as' => 'adminskpdsuratkeluar']);
   });
 
   Route::namespace('AdminSKPD\Pegawai')->group(function () {
