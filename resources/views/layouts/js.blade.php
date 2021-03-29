@@ -20,6 +20,10 @@
 <script src="{{ asset('assets_admin/bundles/mainscripts.bundle.js') }}"></script>
 {{-- <script src="{{ asset('assets_admin/js/index.js') }}"></script> --}}
 
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+{{-- <script src="https://cdn.datatables.net/plug-ins/1.10.12/sorting/datetime-moment.js"></script> --}}
+
 <script src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('assets_admin/bundles/datatablescripts.bundle.js') }}"></script>
 <script src="{{ asset('assets_admin/vendor/jquery-datatable/buttons/dataTables.buttons.min.js') }}"></script>

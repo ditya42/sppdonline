@@ -9,7 +9,7 @@
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-12 text-right">
                         <ul class="breadcrumb justify-content-end">
-                            <li class="breadcrumb-item"><a href="#"><i class="icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="icon-home"></i></a></li>
                             <li class="breadcrumb-item active">Master</li>
                             <li class="breadcrumb-item">Data Surat Keluar </li>
                         </ul>
@@ -21,6 +21,7 @@
                         <div class="card">
                             <br>
                             <a style="margin-left: 10px;"  data-toggle="modal" onclick="addform()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Surat Keluar</button></a>
+                            <a href="{{ route('adminskpdsuratkeluar.trash') }}" style="margin-left: 10px;"  ><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Sampah</button></a>
                             <div class="table-responsive">
                                 <div class="body">
                                         <table class="table table-bordered table-hover js-basic-example dataTable table-custom" width="100%">
@@ -65,6 +66,8 @@
 
 
     <script>
+
+
         var save_method;
 
         function addform() {
@@ -79,6 +82,30 @@
             $('#loading').hide();
         }
 
+        $.fn.dataTable.render.moment = function ( from, to, locale ) {
+      // Argument shifting
+      if ( arguments.length === 1 ) {
+          locale = 'en';
+          to = from;
+          from = 'YYYY-MM-DD';
+      }
+      else if ( arguments.length === 2 ) {
+          locale = 'en';
+      }
+
+      return function ( d, type, row ) {
+          if (! d) {
+              return type === 'sort' || type === 'type' ? 0 : d;
+          }
+
+          var m = window.moment( d, from, locale, true );
+
+          // Order and type get a number value from Moment, everything else
+          // sees the rendered value
+          return m.format( type === 'sort' || type === 'type' ? 'x' : to );
+      };
+    };
+
         $(function() {
           table = $('.table').DataTable({
               processing: true,
@@ -87,7 +114,7 @@
               columns: [
                   { data: 'DT_RowIndex', orderable: false, searchable: false},
                   { data: 'kepada' },
-                  { data: 'tanggal' },
+                  { data: 'tanggal', render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ) },
                 //   { data: 'nomor' },
                   { data: 'nomor_lengkap' },
                   { data: 'perihal' },
@@ -182,7 +209,7 @@
       .then((willDelete) => {
         if (willDelete.value) {
             $.ajax({
-            url : "jenissurat/"+id,
+            url : "suratkeluar/"+id,
             type : "POST",
             data: {
                 "_method" : "DELETE",

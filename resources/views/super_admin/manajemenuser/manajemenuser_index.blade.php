@@ -9,7 +9,7 @@
                     </div>
                     <div class="col-lg-7 col-md-4 col-sm-12 text-right">
                         <ul class="breadcrumb justify-content-end">
-                            <li class="breadcrumb-item"><a href="#"><i class="icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}"><i class="icon-home"></i></a></li>
                             <li class="breadcrumb-item active">Manajemen User</li>
                         </ul>
                     </div>

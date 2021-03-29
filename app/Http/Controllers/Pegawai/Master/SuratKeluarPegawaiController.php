@@ -23,13 +23,7 @@ class SuratKeluarPegawaiController extends Controller
     public function data()
     {
         $user = auth()->user();
-        $query = DB::table('sppd_suratkeluar')
-
-
-        // ->orderBy('tb_skpd.skpd_nama','asc')
-        ->orderBy('sppd_suratkeluar.created_at','desc')
-        ->where('skpd', $user->skpd_id)
-        ->get();
+        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id);
 
         // dd($query);
 

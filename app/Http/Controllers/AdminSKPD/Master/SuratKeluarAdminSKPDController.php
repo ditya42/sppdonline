@@ -23,15 +23,28 @@ class SuratKeluarAdminSKPDController extends Controller
         ]);
     }
 
+    public function trash()
+    {
+        $jenissurat = JenisSurat::all();
+        return view('admin_skpd.master.suratkeluar.suratkeluar_trashed',[
+            'jenissurat' => $jenissurat,
+        ]);
+    }
+
     public function data()
     {
         $user = auth()->user();
-        $query = DB::table('sppd_suratkeluar')
 
-        // ->orderBy('tb_skpd.skpd_nama','asc')
-        ->orderBy('sppd_suratkeluar.created_at','desc')
-        ->where('skpd', $user->skpd_id)
-        ->get();
+        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id);
+
+
+
+        // $query = DB::table('sppd_suratkeluar')
+
+        // // ->orderBy('tb_skpd.skpd_nama','asc')
+        // ->orderBy('sppd_suratkeluar.created_at','desc')
+        // ->where('skpd', $user->skpd_id)
+        // ->get();
 
         // dd($query);
 
@@ -55,6 +68,49 @@ class SuratKeluarAdminSKPDController extends Controller
             ->addIndexColumn('DT_RowIndex')
             ->toJson();
     }
+
+
+
+
+    //trashed data
+    public function datatrash()
+    {
+        $user = auth()->user();
+
+        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id)->onlyTrashed();
+
+
+
+        // $query = DB::table('sppd_suratkeluar')
+
+        // // ->orderBy('tb_skpd.skpd_nama','asc')
+        // ->orderBy('sppd_suratkeluar.created_at','desc')
+        // ->where('skpd', $user->skpd_id)
+        // ->get();
+
+        // dd($query);
+
+
+        return DataTables::of($query)
+            ->addColumn('action', function($data) {
+                return '
+                    <div style="color: #fff">
+                        <center>
+
+
+                      <a onclick="restore('.$data->id.')" class="btn btn-success btn-sm"><i class="fa fa-undo"></i> restore</a>
+
+                        </center>
+
+                    </div>
+
+                ';
+            })
+            ->addIndexColumn('DT_RowIndex')
+            ->toJson();
+    }
+
+
 
     public function rulesCreate()
     {
@@ -90,6 +146,10 @@ class SuratKeluarAdminSKPDController extends Controller
         $kodesurat = JenisSurat::where('jenissurat_id',$jenissurat)->first();
 
         $format_nomor = $request['suratkeluar_format'];
+
+        // $tanggal = date("d-m-Y", strtotime($request['suratkeluar_tanggal']))
+
+
 
         if($cek == null){
             $db = new SuratKeluar;
@@ -167,5 +227,34 @@ class SuratKeluarAdminSKPDController extends Controller
 
     }
 
+    public function show($id){
+
+    }
+
+    public function destroy($id)
+    {
+        $db = SuratKeluar::find($id);
+        $db->delete();
+    }
+
+    public function restore($id)
+    {
+        //dd($id);
+        // $restore = SuratKeluar::where('id', $id)->first();
+        //$restore = SuratKeluar::find($id);
+
+        $restore = DB::table('sppd_suratkeluar')
+        ->where('id', $id)
+        ->update(['deleted_at' => null]);
+
+        // $restore->deleted_at = null;
+        // $restore->update();
+
+        session()->flash('success', 'Data Berhasil Dikembalikan.');
+        //dd($db);
+        // $db = SuratKeluar::find($id);
+        // dd($id);
+    	// $db->restore();
+    }
 
 }
