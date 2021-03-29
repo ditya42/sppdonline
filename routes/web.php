@@ -23,6 +23,14 @@ Route::group(['middleware' => ['web','role:Super Admin']] , function() {
 
     Route::get('Superadmin/dasarsurat/data','DasarController@data')->name('superadmindasarsurat.data');
     Route::resource('superadmin/dasarsurat','DasarController', ['as' => 'superadmin']);
+
+    //Surat Keluar untuk superadmin
+    Route::get('superadmin/suratkeluar/data','SuratKeluarSuperAdminController@data')->name('superadminsuratkeluar.data');
+    Route::get('superadmin/suratkeluar/datatrash','SuratKeluarSuperAdminController@datatrash')->name('superadminsuratkeluar.datatrash');
+    Route::post('superadmin/suratkeluar/restore/{id}','SuratKeluarSuperAdminController@restore')->name('superadminsuratkeluar.restore');
+    Route::delete('superadmin/suratkeluar/deletepermanen/{id}','SuratKeluarSuperAdminController@deletepermanen')->name('superadminsuratkeluar.deletepermanen');
+    Route::get('superadmin/suratkeluar/trash','SuratKeluarSuperAdminController@trash')->name('superadminsuratkeluar.trash');
+    Route::resource('superadmin/suratkeluar','SuratKeluarSuperAdminController', ['as' => 'superadminsuratkeluar']);
   });
 
   Route::namespace('SuperAdmin')->group(function () {
@@ -73,6 +81,20 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
     Route::resource('manajemenuseradmin','ManajemenUserAdminController');
 
     Route::resource('notadinas','NotaDinasController');
+
+
+
+
+    //api jabatan dan pegawai
+    Route::get('adminskpd/notadinas/apijabatan/','NotaDinasAdminSKPDController@apijabatan')->name('adminskpdnotadinas.apijabatan');
+    Route::get('adminskpd/notadinas/apipegawai/','NotaDinasAdminSKPDController@apipegawai')->name('adminskpdnotadinas.apipegawai');
+
+    //pengajuan nota dinas sebagai admin skpd
+    Route::get('adminskpd/notadinas/data','NotaDinasAdminSKPDController@data')->name('adminskpdnotadinas.data');
+    Route::resource('adminskpd/notadinas','NotaDinasAdminSKPDController',['as' => 'adminskpdnotadinas']);
+
+    //setujui
+     Route::get('adminskpd/notadinas/setujui/{id}','NotaDinasAdminSKPDController@setujui')->name('adminskpdnotadinas.setujui');
   });
 
 

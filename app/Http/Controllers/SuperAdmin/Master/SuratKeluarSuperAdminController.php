@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\AdminSKPD\Master;
+namespace App\Http\Controllers\SuperAdmin\Master;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,12 +12,12 @@ use App\Model\SuratKeluar;
 use Illuminate\Support\Carbon;
 use JsValidator;
 
-class SuratKeluarAdminSKPDController extends Controller
+class SuratKeluarSuperAdminController extends Controller
 {
     public function index()
     {
         $jenissurat = JenisSurat::all();
-        return view('admin_skpd.master.suratkeluar.suratkeluar_index', [
+        return view('super_admin.master.suratkeluar.suratkeluar_index', [
             'JsValidator' => JsValidator::make($this->rulesCreate(), $this->messages()),
             'jenissurat' => $jenissurat,
         ]);
@@ -26,7 +26,7 @@ class SuratKeluarAdminSKPDController extends Controller
     public function trash()
     {
         $jenissurat = JenisSurat::all();
-        return view('admin_skpd.master.suratkeluar.suratkeluar_trashed',[
+        return view('super_admin.master.suratkeluar.suratkeluar_trashed',[
             'jenissurat' => $jenissurat,
         ]);
     }
@@ -69,9 +69,6 @@ class SuratKeluarAdminSKPDController extends Controller
             ->toJson();
     }
 
-
-
-
     //trashed data
     public function datatrash()
     {
@@ -99,6 +96,7 @@ class SuratKeluarAdminSKPDController extends Controller
 
 
                       <a onclick="restore('.$data->id.')" class="btn btn-success btn-sm"><i class="fa fa-undo"></i> restore</a>
+                      <a onclick="deleteData('.$data->id.')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete Permanen</a>
 
                         </center>
 
@@ -109,8 +107,6 @@ class SuratKeluarAdminSKPDController extends Controller
             ->addIndexColumn('DT_RowIndex')
             ->toJson();
     }
-
-
 
     public function rulesCreate()
     {
@@ -263,4 +259,11 @@ class SuratKeluarAdminSKPDController extends Controller
     	// $db->restore();
     }
 
+    public function deletepermanen($id)
+    {
+        DB::table('sppd_suratkeluar')->where('id', $id)->delete();
+
+
+
+    }
 }
