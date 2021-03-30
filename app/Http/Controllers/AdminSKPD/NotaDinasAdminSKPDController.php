@@ -57,8 +57,8 @@ class NotaDinasAdminSKPDController extends Controller
                     <div style="color: #fff">
                         <center>
 
-                        <a href="' .route('pegawaiberangkat',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
-                        <a href="' .route('dasarnotadinas.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
+                        <a href="' .route('pegawaiberangkatadminskpd',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
+                        <a href="' .route('dasarnotadinasadminskpd.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
                             <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
                             <a onclick="showForm('.$data->id.')" class="btn btn-success btn-sm"><i class="fa fa-eye"> Show</i></a>
 
@@ -76,7 +76,7 @@ class NotaDinasAdminSKPDController extends Controller
 
 
                         <a href="' .route('pegawaiberangkatadminskpd',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
-                        <a href="' .route('dasarnotadinas.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
+                        <a href="' .route('dasarnotadinasadminskpd.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
 
 
 
