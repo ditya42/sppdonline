@@ -83,6 +83,19 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
     Route::resource('notadinas','NotaDinasController');
 
 
+    //pegawai berangkat
+    Route::get('adminskpd/notadinas/pegawaiberangkat/data','PegawaiBerangkatAdminSKPDController@data')->name('pegawaiberangkatadminskpd.data');
+    Route::get('adminskpd/notadinas/pegawaiberangkat/{id}','PegawaiBerangkatAdminSKPDController@index')->name('pegawaiberangkatadminskpd');
+    Route::post('adminskpd/notadinas/pegawaiberangkat','PegawaiBerangkatAdminSKPDController@store')->name('pegawaiberangkatadminskpd.store');
+    Route::delete('adminskpd/notadinas/pegawaiberangkat/{id}','PegawaiBerangkatAdminSKPDController@destroy')->name('pegawaiberangkatadminskpd.destroy');
+
+    // //Dasar Surat
+    // Route::get('user/notadinas/dasarsurat/data','DasarNotaDinasController@data')->name('dasarnotadinas.data');
+    // Route::get('user/notadinas/dasarsurat/{id}','DasarNotaDinasController@index')->name('dasarnotadinas.index');
+    // Route::get('user/notadinas/apidasar/','DasarNotaDinasController@apidasar')->name('dasarnotadinas.apidasar');
+    // Route::post('user/notadinas/dasarsurat','DasarNotaDinasController@store')->name('dasarnotadinas.store');
+    // Route::post('user/notadinas/dasarsuratbaru','DasarNotaDinasController@storebaru')->name('dasarnotadinas.storebaru');
+    // Route::delete('user/notadinas/dasarsurat/{id}','DasarNotaDinasController@destroy')->name('dasarnotadinas.destroy');
 
 
     //api jabatan dan pegawai

@@ -28,7 +28,7 @@
 <li class="@yield('active-surat')">
 <a href=".master" class="has-arrow"><i class="fa fa-bars"></i><span>Pengajuan Surat</span></a>
 <ul>
-  <li class="@yield('active-notadinas')"><a href="{{ route('notadinas.index') }}">Nota Dinas</a></li>
+  <li class="@yield('active-notadinas')"><a href="{{ route('adminskpdnotadinas.notadinas.index') }}">Nota Dinas</a></li>
 </ul>
 </li>
 
