@@ -236,7 +236,7 @@
     function deleteData(id) {
       swal({
         title: "Apakah kamu yakin ?",
-        text: "Akan menghapus data ini",
+        text: "Data Nota Dinas dari Surat Keluar ini juga akan dihapus",
         icon: "warning",
         confirmButtonText: 'Hapus',
         showCancelButton: true,

@@ -8,6 +8,7 @@ use App\Model\Master\JenisSurat;
 use DB;
 use Yajra\Datatables\DataTables;
 use Alert;
+use App\Model\NotaDinas;
 use App\Model\SuratKeluar;
 use Illuminate\Support\Carbon;
 use JsValidator;
@@ -236,7 +237,9 @@ class SuratKeluarSuperAdminController extends Controller
     public function destroy($id)
     {
         $db = SuratKeluar::find($id);
+        $notadinas = NotaDinas::where('id', $db->id_notadinas);
         $db->delete();
+        $notadinas->delete();
     }
 
     public function restore($id)
@@ -245,10 +248,12 @@ class SuratKeluarSuperAdminController extends Controller
         // $restore = SuratKeluar::where('id', $id)->first();
         //$restore = SuratKeluar::find($id);
 
-        $restore = DB::table('sppd_suratkeluar')
-        ->where('id', $id)
-        ->update(['deleted_at' => null]);
+        $restore = SuratKeluar::onlyTrashed('id', $id)->first();
 
+
+        $restoreNota = NotaDinas::onlyTrashed('id', $restore->id_notadinas)->first();
+        $restore->restore();
+        $restoreNota->restore();
         // $restore->deleted_at = null;
         // $restore->update();
 
@@ -261,7 +266,21 @@ class SuratKeluarSuperAdminController extends Controller
 
     public function deletepermanen($id)
     {
-        DB::table('sppd_suratkeluar')->where('id', $id)->delete();
+
+
+        $suratkeluar = SuratKeluar::onlyTrashed('id', $id)->first();
+        // dd($suratkeluar);
+
+        if($suratkeluar->id_notadinas){
+            $notadinas = NotaDinas::where('id', $suratkeluar->id_notadinas);
+            // dd($notadinas);
+            $notadinas->delete();
+        }
+
+        $suratkeluar->forcedelete();
+
+
+        // DB::table('sppd_suratkeluar')->where('id', $id)->delete();
 
 
 

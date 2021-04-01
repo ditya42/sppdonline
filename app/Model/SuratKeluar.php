@@ -10,6 +10,6 @@ class SuratKeluar extends Model
 
     use SoftDeletes;
     protected $table = 'sppd_suratkeluar';
-    // protected $primaryKey = 'id';
+    protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];
 }

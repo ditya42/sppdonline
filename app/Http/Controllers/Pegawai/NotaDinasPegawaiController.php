@@ -325,7 +325,7 @@ class NotaDinasPegawaiController extends Controller
             $db->nomor_lengkap = $jenissurat->kode_surat . 1 . $notadinas->format_nomor;
             $db->kepada = $pejabat->jabatan_nama;
             $db->tanggal = $notadinas->tanggal_surat;
-            $db->perihal = $notadinas->Hal;
+            $db->perihal = "Nota Dinas untuk " . $notadinas->Hal;
             $db->tahun = $notadinas->tahun;
             $db->skpd = $notadinas->skpd;
             $db->id_notadinas = $notadinas->id;
@@ -347,7 +347,7 @@ class NotaDinasPegawaiController extends Controller
             $db->nomor_lengkap = $jenissurat->kode_surat . $cek1 . $notadinas->format_nomor;
             $db->kepada = $pejabat->jabatan_nama;
             $db->tanggal = $notadinas->tanggal_surat;
-            $db->perihal = $notadinas->Hal;
+            $db->perihal = "Nota Dinas untuk " . $notadinas->Hal;
             $db->tahun = $notadinas->tahun;
             $db->skpd = $notadinas->skpd;
             $db->id_notadinas = $notadinas->id;
