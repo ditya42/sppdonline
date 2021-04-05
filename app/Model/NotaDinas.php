@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class NotaDinas extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
     protected $table = 'sppd_notadinas';
     protected $primaryKey = 'id';
-    protected $dates = ['deleted_at'];
+    // protected $dates = ['deleted_at'];
 }

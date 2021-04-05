@@ -31,6 +31,35 @@ Route::group(['middleware' => ['web','role:Super Admin']] , function() {
     Route::delete('superadmin/suratkeluar/deletepermanen/{id}','SuratKeluarSuperAdminController@deletepermanen')->name('superadminsuratkeluar.deletepermanen');
     Route::get('superadmin/suratkeluar/trash','SuratKeluarSuperAdminController@trash')->name('superadminsuratkeluar.trash');
     Route::resource('superadmin/suratkeluar','SuratKeluarSuperAdminController', ['as' => 'superadminsuratkeluar']);
+
+    //pegawai berangkat untuk notadinas superadmin
+    Route::get('superadmin/notadinas/pegawaiberangkat/data','PegawaiBerangkatSuperAdminController@data')->name('superadminpegawaiberangkat.data');
+    Route::get('superadmin/notadinas/pegawaiberangkat/{id}','PegawaiBerangkatSuperAdminController@index')->name('superadminpegawaiberangkat.index');
+    Route::post('superadmin/notadinas/pegawaiberangkat','PegawaiBerangkatSuperAdminController@store')->name('superadminpegawaiberangkat.store');
+    Route::delete('superadmin/notadinas/pegawaiberangkat/{id}','PegawaiBerangkatSuperAdminController@destroy')->name('superadminpegawaiberangkat.destroy');
+
+    //Dasar Surat untuk notadinas superadmin
+    Route::get('superadmin/notadinas/dasarsurat/data','DasarNotaDinasSuperAdminController@data')->name('superadmindasarnotadinas.data');
+    Route::get('superadmin/notadinas/dasarsurat/{id}','DasarNotaDinasSuperAdminController@index')->name('superadmindasarnotadinas.index');
+    Route::get('superadmin/notadinas/apidasar/','DasarNotaDinasSuperAdminController@apidasar')->name('superadmindasarnotadinas.apidasar');
+    Route::post('superadmin/notadinas/dasarsurat','DasarNotaDinasSuperAdminController@store')->name('superadmindasarnotadinas.store');
+    Route::post('superadmin/notadinas/dasarsuratbaru','DasarNotaDinasSuperAdminController@storebaru')->name('superadmindasarnotadinas.storebaru');
+    Route::delete('superadmin/notadinas/dasarsurat/{id}','DasarNotaDinasSuperAdminController@destroy')->name('superadmindasarnotadinas.destroy');
+
+
+    //Nota Dinas untuk superadmin
+    Route::get('superadmin/notadinas/data','NotaDinasSuperAdminController@data')->name('superadminnotadinas.data');
+
+    Route::get('superadmin/notadinas/apijabatan/','NotaDinasSuperAdminController@apijabatan')->name('superadminnotadinas.apijabatan');
+    Route::get('superadmin/notadinas/apipegawai/','NotaDinasSuperAdminController@apipegawai')->name('superadminnotadinas.apipegawai');
+    Route::get('superadmin/notadinas/apiskpd/','NotaDinasSuperAdminController@apiskpd')->name('superadminnotadinas.apiskpd');
+    Route::resource('superadmin/notadinas','NotaDinasSuperAdminController', ['as' => 'superadmin']);
+
+    Route::get('superadmin/notadinas/setujui/{id}','NotaDinasSuperAdminController@setujui')->name('superadminnotadinas.setujui');
+
+
+
+
   });
 
   Route::namespace('SuperAdmin')->group(function () {
