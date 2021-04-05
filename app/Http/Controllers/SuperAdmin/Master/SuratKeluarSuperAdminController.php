@@ -36,7 +36,7 @@ class SuratKeluarSuperAdminController extends Controller
     {
         $user = auth()->user();
 
-        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id);
+        $query = SuratKeluar::orderBy('created_at','desc');
 
 
 
@@ -75,7 +75,7 @@ class SuratKeluarSuperAdminController extends Controller
     {
         $user = auth()->user();
 
-        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id)->onlyTrashed();
+        $query = SuratKeluar::orderBy('created_at','desc')->onlyTrashed();
 
 
 
