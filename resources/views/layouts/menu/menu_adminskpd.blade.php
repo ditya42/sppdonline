@@ -14,6 +14,7 @@
   <li class="@yield('active-jenissurat')"><a class="" href="{{ route('adminskpd.jenissurat.index') }}">Jenis Surat</a></li>
   <li class="@yield('active-dasarsurat')"><a class="" href="{{ route('adminskpd.dasarsurat.index') }}">Dasar Surat</a></li>
   <li class="@yield('active-suratkeluar')"><a class="" href="{{ route('adminskpdsuratkeluar.suratkeluar.index') }}">Surat Keluar</a></li>
+  <li class="@yield('active-notadinas')"><a class="" href="{{ route('adminskpdsuratkeluar.suratkeluar.index') }}">Nota Dinas Perjalanan</a></li>
 </ul>
 </li>
 
@@ -28,7 +29,7 @@
 <li class="@yield('active-surat')">
 <a href=".master" class="has-arrow"><i class="fa fa-bars"></i><span>Pengajuan Surat</span></a>
 <ul>
-  <li class="@yield('active-notadinas')"><a href="{{ route('adminskpdnotadinas.notadinas.index') }}">Nota Dinas</a></li>
+  <li class="@yield('active-notadinas')"><a href="{{ route('adminskpdnotadinas.notadinas.index') }}">Nota Dinas Perjalanan</a></li>
 </ul>
 </li>
 

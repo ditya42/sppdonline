@@ -92,6 +92,15 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
     Route::post('adminskpd/suratkeluar/restore/{id}','SuratKeluarAdminSKPDController@restore')->name('adminskpdsuratkeluar.restore');
     Route::get('adminskpd/suratkeluar/trash','SuratKeluarAdminSKPDController@trash')->name('adminskpdsuratkeluar.trash');
     Route::resource('adminskpd/suratkeluar','SuratKeluarAdminSKPDController', ['as' => 'adminskpdsuratkeluar']);
+
+    //master adminskpd notadinas
+    Route::get('adminskpd/masternotadinas/data','NotaDinasMasterAdminSKPDController@data')->name('adminskpdmasternotadinas.data');
+
+
+    Route::get('adminskpd/masternotadinas/apiskpd/','NotaDinasMasterAdminSKPDController@apiskpd')->name('adminskpdmasternotadinas.apiskpd');
+    Route::resource('adminskpd/masternotadinas','NotaDinasMasterAdminSKPDController', ['as' => 'adminskpdmaster']);
+
+
   });
 
   Route::namespace('AdminSKPD\Pegawai')->group(function () {

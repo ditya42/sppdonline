@@ -36,7 +36,12 @@ class SuratKeluarSuperAdminController extends Controller
     {
         $user = auth()->user();
 
-        $query = SuratKeluar::orderBy('created_at','desc');
+        // $query = SuratKeluar::orderBy('created_at','desc');
+
+        $query =DB::table('sppd_suratkeluar')
+            ->leftjoin('tb_skpd', 'tb_skpd.skpd_id','=', 'sppd_suratkeluar.skpd')
+            ->where('deleted_at', null)
+            ->get();
 
 
 
@@ -75,7 +80,10 @@ class SuratKeluarSuperAdminController extends Controller
     {
         $user = auth()->user();
 
-        $query = SuratKeluar::orderBy('created_at','desc')->onlyTrashed();
+        $query =DB::table('sppd_suratkeluar')
+            ->leftjoin('tb_skpd', 'tb_skpd.skpd_id','=', 'sppd_suratkeluar.skpd')
+            ->where('deleted_at', '!=', null)
+            ->get();
 
 
 
@@ -239,7 +247,7 @@ class SuratKeluarSuperAdminController extends Controller
         $db = SuratKeluar::find($id);
         $notadinas = NotaDinas::where('id', $db->id_notadinas);
         $db->delete();
-        $notadinas->delete();
+
     }
 
     public function restore($id)
@@ -251,9 +259,9 @@ class SuratKeluarSuperAdminController extends Controller
         $restore = SuratKeluar::onlyTrashed('id', $id)->first();
 
 
-        $restoreNota = NotaDinas::onlyTrashed('id', $restore->id_notadinas)->first();
+
         $restore->restore();
-        $restoreNota->restore();
+
         // $restore->deleted_at = null;
         // $restore->update();
 

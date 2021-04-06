@@ -33,6 +33,7 @@
 
                                                     <th>Nomor Surat Keluar</th>
                                                     <th>Perihal</th>
+                                                    <th>SKPD</th>
                                                     <th>Aksi</th>
 
 
@@ -118,7 +119,7 @@
                 //   { data: 'nomor' },
                   { data: 'nomor_lengkap' },
                   { data: 'perihal' },
-
+                  { data: 'skpd_nama' },
                   { data: 'action', actions: 'actions', orderable: false, searchable: false }
               ]
           });

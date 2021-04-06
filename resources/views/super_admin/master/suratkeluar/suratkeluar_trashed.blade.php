@@ -34,6 +34,7 @@
 
                                                     <th>Nomor Surat Keluar</th>
                                                     <th>Perihal</th>
+                                                    <th>SKPD</th>
                                                     <th>Aksi</th>
 
 
@@ -118,7 +119,7 @@
                 //   { data: 'nomor' },
                   { data: 'nomor_lengkap' },
                   { data: 'perihal' },
-
+                  { data: 'skpd_nama' },
                   { data: 'action', actions: 'actions', orderable: false, searchable: false }
               ]
           });
@@ -236,7 +237,7 @@
     function deleteData(id) {
       swal({
         title: "Apakah kamu yakin ?",
-        text: "Data Nota Dinas dari Surat Keluar ini juga akan dihapus",
+        text: "Jika Ada Data Nota Dinas dari Surat Keluar ini juga akan dihapus",
         icon: "warning",
         confirmButtonText: 'Hapus',
         showCancelButton: true,
