@@ -68,6 +68,7 @@
                                                     <th>Jenis</th>
                                                     <th>Nomor</th>
                                                     <th>Format Nomor</th>
+                                                    <th>SKPD</th>
                                                     {{-- <th>PNS Berangkat</th>
                                                     <th>Dasar</th> --}}
 
@@ -133,6 +134,7 @@
                   { data: 'kode_surat' },
                   { data: 'nomor' },
                   { data: 'format_nomor' },
+                  { data: 'skpd_nama' },
 
                 //   { data: 'pns_berangkat',  actions: 'actions', orderable: false, searchable: false },
                 //   { data: 'dasar_surat',  actions: 'actions', orderable: false, searchable: false },

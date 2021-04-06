@@ -85,6 +85,7 @@ class NotaDinasSuperAdminController extends Controller
         ->leftJoin('sppd_jenissurat','sppd_notadinas.jenis_surat','=','sppd_jenissurat.jenissurat_id')
         ->leftJoin('tb_jabatan','sppd_notadinas.kepada','=','tb_jabatan.jabatan_id')
         ->leftJoin('tb_pegawai','sppd_notadinas.penandatangan','=','tb_pegawai.pegawai_id')
+        ->leftJoin('tb_skpd','sppd_notadinas.skpd','=','tb_skpd.skpd_id')
         // ->orderBy('tb_skpd.skpd_nama','asc')
         ->orderBy('sppd_notadinas.created_at','desc')
 
