@@ -90,12 +90,18 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
     Route::get('adminskpd/suratkeluar/data','SuratKeluarAdminSKPDController@data')->name('adminskpdsuratkeluar.data');
     Route::get('adminskpd/suratkeluar/datatrash','SuratKeluarAdminSKPDController@datatrash')->name('adminskpdsuratkeluar.datatrash');
     Route::post('adminskpd/suratkeluar/restore/{id}','SuratKeluarAdminSKPDController@restore')->name('adminskpdsuratkeluar.restore');
+    Route::delete('adminskpd/suratkeluar/deletepermanen/{id}','SuratKeluarAdminSKPDController@deletepermanen')->name('adminskpdsuratkeluar.deletepermanen');
     Route::get('adminskpd/suratkeluar/trash','SuratKeluarAdminSKPDController@trash')->name('adminskpdsuratkeluar.trash');
     Route::resource('adminskpd/suratkeluar','SuratKeluarAdminSKPDController', ['as' => 'adminskpdsuratkeluar']);
 
     //master adminskpd notadinas
     Route::get('adminskpd/masternotadinas/data','NotaDinasMasterAdminSKPDController@data')->name('adminskpdmasternotadinas.data');
 
+    Route::get('adminskpd/masternotadinas/pegawaiberangkat/data','PegawaiBerangkatMasterAdminSKPDController@data')->name('pegawaiberangkatadminskpdmaster.data');
+    Route::get('adminskpd/masternotadinas/pegawaiberangkat/{id}','PegawaiBerangkatMasterAdminSKPDController@index')->name('pegawaiberangkatadminskpdmaster');
+
+    Route::get('adminskpd/masternotadinas/dasarsurat/data','DasarNotaMasterAdminSKPDController@data')->name('dasarnotaadminskpdmaster.data');
+    Route::get('adminskpd/masternotadinas/dasarsurat/{id}','DasarNotaMasterAdminSKPDController@index')->name('dasarnotaadminskpdmaster');
 
     Route::get('adminskpd/masternotadinas/apiskpd/','NotaDinasMasterAdminSKPDController@apiskpd')->name('adminskpdmasternotadinas.apiskpd');
     Route::resource('adminskpd/masternotadinas','NotaDinasMasterAdminSKPDController', ['as' => 'adminskpdmaster']);

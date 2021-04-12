@@ -233,6 +233,42 @@
 
 
 
+    function deleteData(id) {
+      swal({
+        title: "Apakah kamu yakin ?",
+        text: "Jika Ada Data Nota Dinas dari Surat Keluar ini juga akan dihapus",
+        icon: "warning",
+        confirmButtonText: 'Hapus',
+        showCancelButton: true,
+
+
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete.value) {
+            $.ajax({
+            url : "deletepermanen/"+id,
+            type : "POST",
+            data: {
+                "_method" : "DELETE",
+                "_token": "{{ csrf_token() }}"
+            },
+            success : function(data){
+              swal("Data berhasil dihapus", {
+                icon: "success",
+              });
+              table.ajax.reload();
+            },
+            error : function() {
+              swal("Tidak dapat menghapus data");
+            }
+          });
+        } else {
+          swal("Batal di hapus");
+        }
+      });
+    }
+
 
 
     </script>

@@ -8,7 +8,9 @@ use App\Model\Master\JenisSurat;
 use DB;
 use Yajra\Datatables\DataTables;
 use Alert;
+use App\Model\DasarNota;
 use App\Model\NotaDinas;
+use App\Model\PegawaiBerangkat;
 use App\Model\SuratKeluar;
 use Illuminate\Support\Carbon;
 use JsValidator;
@@ -216,6 +218,8 @@ class SuratKeluarSuperAdminController extends Controller
 
         $db = SuratKeluar::find($id);
 
+
+
         $jenissurat = $request['suratkeluar_jenissurat'];
 
         $kodesurat = JenisSurat::where('jenissurat_id',$jenissurat)->first();
@@ -232,8 +236,25 @@ class SuratKeluarSuperAdminController extends Controller
         $db->tahun = $year;
         $db->skpd = $user->skpd_id;
 
+        if($db->id_notadinas){
+            $notadinas = NotaDinas::where('id', $db->id_notadinas)->first();
+            // dd($notadinas);
+            $notadinas->tanggal_surat = $request['suratkeluar_tanggal'];
+            $notadinas->jenis_surat = $jenissurat;
+            $notadinas->format_nomor = $format_nomor;
+
+            $hal = $request['suratkeluar_hal'];
+
+            $hapus=preg_replace("/Nota Dinas untuk/","", $hal);
+
+             $notadinas->Hal = $hapus;
+            $notadinas->update();
+        }
+
+
 
             $db->update();
+
             return response()->json(['code'=>200, 'status' => 'Dasar Surat Berhasil Disimpan'], 200);
 
     }
@@ -283,6 +304,12 @@ class SuratKeluarSuperAdminController extends Controller
             $notadinas = NotaDinas::where('id', $suratkeluar->id_notadinas);
             // dd($notadinas);
             $notadinas->delete();
+
+            $dasarnota = DasarNota::where('id_notadinas', $suratkeluar->id_notadinas);
+            $pegawaiberangkat = PegawaiBerangkat::where('id_notadinas', $suratkeluar->id_notadinas);
+
+            $dasarnota->delete();
+            $pegawaiberangkat->delete();
         }
 
         $suratkeluar->forcedelete();

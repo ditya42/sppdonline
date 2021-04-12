@@ -16,7 +16,8 @@
 
                             <label id="label_kepada"></label><br>
                             <label class="kepada"></label>
-                            <input type="text" class="form-control" name="suratkeluar_kepada" id="suratkeluar_kepada"><br>
+                            <input type="text" class="form-control" name="suratkeluar_kepada" id="suratkeluar_kepada">
+                            <label class="text-danger" >Kalau Diubah, Harap Ubah Juga Tujuan Surat Di Nota Dinas yang bersangkutan karena berbeda tipe data</label><br><br>
 
 
 
@@ -34,7 +35,8 @@
                             @foreach ($jenissurat as $jenis)
                                 <option value="{{ $jenis->jenissurat_id }}">{{ $jenis->kode_surat }}</option>
                             @endforeach
-                        </select><br>
+                        </select>
+                        <br>
 
                         <label>Format Nomor Surat</label>
                           <input type="text" class="form-control" name="suratkeluar_format" id="suratkeluar_format">

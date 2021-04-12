@@ -8,6 +8,9 @@ use App\Model\Master\JenisSurat;
 use DB;
 use Yajra\Datatables\DataTables;
 use Alert;
+use App\Model\DasarNota;
+use App\Model\NotaDinas;
+use App\Model\PegawaiBerangkat;
 use App\Model\SuratKeluar;
 use Illuminate\Support\Carbon;
 use JsValidator;
@@ -55,7 +58,7 @@ class SuratKeluarAdminSKPDController extends Controller
                     <div style="color: #fff">
                         <center>
 
-                        <a onclick="editForm('.$data->id.')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"> Edit</i></a>
+
 
                         <a onclick="deleteData('.$data->id.')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
 
@@ -64,6 +67,8 @@ class SuratKeluarAdminSKPDController extends Controller
                     </div>
 
                 ';
+                // untuk edit, pindah ke return untuk aktivasi
+                //<a onclick="editForm('.$data->id.')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"> Edit</i></a>
             })
             ->addIndexColumn('DT_RowIndex')
             ->toJson();
@@ -99,7 +104,7 @@ class SuratKeluarAdminSKPDController extends Controller
 
 
                       <a onclick="restore('.$data->id.')" class="btn btn-success btn-sm"><i class="fa fa-undo"></i> restore</a>
-
+                      <a onclick="deleteData('.$data->id.')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Delete Permanen</a>
                         </center>
 
                     </div>
@@ -261,6 +266,34 @@ class SuratKeluarAdminSKPDController extends Controller
         // $db = SuratKeluar::find($id);
         // dd($id);
     	// $db->restore();
+    }
+
+    public function deletepermanen($id)
+    {
+
+
+        $suratkeluar = SuratKeluar::onlyTrashed('id', $id)->first();
+        // dd($suratkeluar);
+
+        if($suratkeluar->id_notadinas){
+            $notadinas = NotaDinas::where('id', $suratkeluar->id_notadinas);
+            // dd($notadinas);
+            $notadinas->delete();
+
+            $dasarnota = DasarNota::where('id_notadinas', $suratkeluar->id_notadinas);
+            $pegawaiberangkat = PegawaiBerangkat::where('id_notadinas', $suratkeluar->id_notadinas);
+
+            $dasarnota->delete();
+            $pegawaiberangkat->delete();
+        }
+
+        $suratkeluar->forcedelete();
+
+
+        // DB::table('sppd_suratkeluar')->where('id', $id)->delete();
+
+
+
     }
 
 }
