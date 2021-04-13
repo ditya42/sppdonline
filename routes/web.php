@@ -53,6 +53,8 @@ Route::group(['middleware' => ['web','role:Super Admin']] , function() {
     Route::get('superadmin/notadinas/apijabatan/','NotaDinasSuperAdminController@apijabatan')->name('superadminnotadinas.apijabatan');
     Route::get('superadmin/notadinas/apipegawai/','NotaDinasSuperAdminController@apipegawai')->name('superadminnotadinas.apipegawai');
     Route::get('superadmin/notadinas/apiskpd/','NotaDinasSuperAdminController@apiskpd')->name('superadminnotadinas.apiskpd');
+    Route::get('superadmin/notadinas/{notadina}/edit2','NotaDinasSuperAdminController@edit2')->name('superadminnotadinas.notadinas.edit2');
+    Route::patch('superadmin/notadinasmasteredit/{id}','NotaDinasSuperAdminController@update2')->name('notadinas.masteredit');
     Route::resource('superadmin/notadinas','NotaDinasSuperAdminController', ['as' => 'superadmin']);
 
     Route::get('superadmin/notadinas/setujui/{id}','NotaDinasSuperAdminController@setujui')->name('superadminnotadinas.setujui');
@@ -190,6 +192,7 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
         Route::post('user/notadinas/dasarsuratbaru','DasarNotaDinasController@storebaru')->name('dasarnotadinas.storebaru');
         Route::delete('user/notadinas/dasarsurat/{id}','DasarNotaDinasController@destroy')->name('dasarnotadinas.destroy');
 
+        //notadinas
         Route::get('user/notadinas/apijabatan/','NotaDinasPegawaiController@apijabatan')->name('pegawainotadinas.apijabatan');
         Route::get('user/notadinas/apipegawai/','NotaDinasPegawaiController@apipegawai')->name('pegawainotadinas.apipegawai');
 
@@ -199,6 +202,10 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
 
         //setujui
         Route::get('user/notadinas/setujui/{id}','NotaDinasPegawaiController@setujui')->name('pegawainotadinas.setujui');
+
+        //pengajuan surat keluar pegawai
+        Route::get('user/pengajuansuratkeluar/data','PengajuanSuratKeluarController@data')->name('pengajuansuratkeluar.data');
+        Route::get('user/pengajuansuratkeluar','PengajuanSuratKeluarController@index')->name('pengajuansuratkeluar.index');
 
     });
 

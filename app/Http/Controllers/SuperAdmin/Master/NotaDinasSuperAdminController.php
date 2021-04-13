@@ -104,7 +104,7 @@ class NotaDinasSuperAdminController extends Controller
                         <a href="' .route('superadminpegawaiberangkat.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
                         <a href="' .route('superadmindasarnotadinas.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
                             <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
-                            <a onclick="showForm('.$data->id.')" class="btn btn-success btn-sm"><i class="fa fa-eye"> Show</i></a>
+                            <a onclick="editForm2('.$data->id.')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"> Edit</i></a>
 
 
                         </center>
@@ -294,6 +294,32 @@ class NotaDinasSuperAdminController extends Controller
         echo json_encode($db);
     }
 
+    public function edit2($id)
+    {
+        $db = DB::table('sppd_notadinas')
+
+            ->leftJoin('tb_jabatan AS A','A.jabatan_id','=','sppd_notadinas.kepada')
+            ->leftJoin('tb_jabatan AS B','B.jabatan_id','=','sppd_notadinas.disposisi1')
+            ->leftJoin('tb_jabatan AS C','C.jabatan_id','=','sppd_notadinas.disposisi2')
+            ->leftJoin('tb_jabatan AS D','D.jabatan_id','=','sppd_notadinas.penandatangan')
+            ->leftJoin('tb_skpd AS E', 'E.skpd_id' ,'=', 'sppd_notadinas.skpd')
+
+            ->select('A.jabatan_nama as jabatan_kepada', 'B.jabatan_nama as jabatan_disposisi1', 'C.jabatan_nama as jabatan_disposisi2','D.jabatan_nama as jabatan_dari', 'id', 'kepada', 'tanggal_surat', 'jenis_surat'
+            ,'format_nomor','lampiran','hal','isi','tujuan','tanggal_dari','tanggal_sampai','anggaran', 'skpd_nama')
+
+            // ->leftJoin('tb_jabatan AS B','sppd_notadinas.disposisi1','=','B.jabatan_id')
+            // ->leftJoin('tb_jabatan AS C','sppd_notadinas.disposisi2','=','C.jabatan_id')
+
+
+        // ->orderBy('tb_skpd.skpd_nama','asc')
+            // ->orderBy('sppd_notadinas.created_at','desc')
+            ->where('id', $id)
+            ->first();
+
+        // dd($db);
+        echo json_encode($db);
+    }
+
     public function update(Request $request, $id)
     {
         $user = auth()->user();
@@ -335,6 +361,77 @@ class NotaDinasSuperAdminController extends Controller
             if (!empty($request['notadinas_disposisi2'])) {
                 $db->disposisi2 = $request['notadinas_disposisi2'];
             }
+
+
+            $db->update();
+            return response()->json(['code'=>200, 'status' => 'Dasar Surat Berhasil Disimpan'], 200);
+
+    }
+
+    public function update2(Request $request, $id)
+    {
+        $user = auth()->user();
+        $date = Carbon::now()->format('Y');
+
+            $db = NotaDinas::find($id);
+
+            // dd($db);
+
+            $suratkeluar = SuratKeluar::where('id_notadinas',$db->id)->first();
+            // dd($suratkeluar);
+
+
+
+
+            $db->tanggal_surat = $request['notadinas_tanggal_edit2'];
+            $db->jenis_surat = $request['notadinas_jenissurat_edit2'];
+            $db->format_nomor = $request['notadinas_format_edit2'];
+            $db->lampiran = $request['notadinas_lampiran_edit2'];
+            $db->hal = $request['notadinas_hal_edit2'];
+            $db->isi = $request['notadinas_isi_edit2'];
+            $db->tujuan = $request['notadinas_tujuan_edit2'];
+            $db->tanggal_dari = $request['notadinas_tanggaldari_edit2'];
+            $db->tanggal_sampai = $request['notadinas_tanggalsampai_edit2'];
+            $db->anggaran = $request['notadinas_anggaran_edit2'];
+            $db->pembuat = $user->pegawai_id;
+
+            $db->tahun = $date;
+
+            if (!empty($request['notadinas_dari_edit2'])) {
+                $db->penandatangan = $request['notadinas_dari_edit2'];
+            }
+
+            if (!empty($request['notadinas_kepada_edit2'])) {
+                $db->kepada = $request['notadinas_kepada_edit2'];
+
+            }
+
+            // if (!empty($request['notadinas_skpd'])) {
+            //     $db->skpd = $request['notadinas_skpd'];
+
+            // }
+
+            if (!empty($request['notadinas_disposisi1_edit2'])) {
+                $db->disposisi1 = $request['notadinas_disposisi1_edit2'];
+            }
+
+            if (!empty($request['notadinas_disposisi2_edit2'])) {
+                $db->disposisi2 = $request['notadinas_disposisi2_edit2'];
+            }
+
+            //untuk update surat keluar dari nota dinas ini
+            $suratkeluar->tanggal = $request['notadinas_tanggal_edit2'];
+            $suratkeluar->jenis_surat = $request['notadinas_jenissurat_edit2'];
+
+            $kodesurat = JenisSurat::where('jenissurat_id', $request['notadinas_jenissurat_edit2'])->first();
+            // dd($kodesurat);
+
+
+            $suratkeluar->perihal = "Nota Dinas Untuk " . $request['notadinas_hal_edit2'];
+            $suratkeluar->format_nomor = $request['notadinas_format_edit2'];
+            $suratkeluar->nomor_lengkap = $kodesurat->kode_surat . $suratkeluar->nomor . $request['notadinas_format_edit2'];
+
+            $suratkeluar->update();
 
 
             $db->update();
