@@ -20,9 +20,8 @@
                 <div class="col-12">
                         <div class="card">
                             <br>
-                            <a style="margin-left: 10px;"  data-toggle="modal" onclick="addform()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Surat Keluar</button></a>
-                            <a href="{{ route('superadminsuratkeluar.trash') }}" style="margin-left: 10px;"  ><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Sampah</button></a>
-                            <a href="{{ route('adminskpdsuratkeluar.trash') }}" style="margin-left: 10px;"  ><button type="button" class="btn btn-warning"><i class="fa fa-print"></i> cetak</button></a>
+                            <a style="margin-left: 10px;"  data-toggle="modal" onclick="addform()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Surat Keluar</button></a>
+
                             <div class="table-responsive">
                                 <div class="body">
                                         <table class="table table-bordered table-hover js-basic-example dataTable table-custom" width="100%">
@@ -31,10 +30,11 @@
                                                     <th width="5">No.</th>
                                                     <th>Tujuan Surat Keluar</th>
                                                     <th>Tanggal Surat</th>
-
-                                                    <th>Nomor Surat Keluar</th>
+                                                    <th>Jenis Surat</th>
+                                                    <th>Nomor</th>
+                                                    <th>Format Nomor</th>
                                                     <th>Perihal</th>
-                                                    <th>SKPD</th>
+
                                                     <th>Aksi</th>
 
 
@@ -46,19 +46,21 @@
                         </div>
                 </div>
             </div>
+
+
             <!-- Modal Dialogs ========= -->
-            @include('admin_skpd.master.suratkeluar.modal.modal_suratkeluar')
+            @include('pegawai.pengajuansuratkeluar.modal.modal_suratkeluar')
 
 
         </div>
     </div>
 @endsection
 
-@section('active-master')
+@section('active-surat')
   active
 @endsection
 
-@section('active-suratkeluar')
+@section('active-suratkeluarpengajuan')
   active
 @endsection
 
@@ -112,15 +114,16 @@
           table = $('.table').DataTable({
               processing: true,
               serverSide: true,
-              ajax: '{!! route('superadminsuratkeluar.data') !!}',
+              ajax: '{!! route('pengajuansuratkeluar.data') !!}',
               columns: [
                   { data: 'DT_RowIndex', orderable: false, searchable: false},
                   { data: 'kepada' },
                   { data: 'tanggal', render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ) },
-                //   { data: 'nomor' },
-                  { data: 'nomor_lengkap' },
+                  { data: 'jenissurat_nama' },
+                  { data: 'nomor' },
+                  { data: 'format_nomor' },
                   { data: 'perihal' },
-                  { data: 'skpd_nama' },
+
                   { data: 'action', actions: 'actions', orderable: false, searchable: false }
               ]
           });
@@ -132,7 +135,7 @@
                   $('#simpan').hide();
                   $('#loading').show();
                   var id = $('#id').val();
-                  if(save_method == "add") url = "{{ route('superadminsuratkeluar.suratkeluar.store') }}";
+                  if(save_method == "add") url = "{{ route('pengajuansuratkeluar.store') }}";
                   else url = "suratkeluar/"+id;
 
                   $.ajax({
@@ -179,7 +182,6 @@
               dataType : "JSON",
               success : function(data){
                 $('#modalsuratkeluar').modal('show');
-                $('.kepada-danger').text('Jika Diubah, ganti juga tujuan surat pada notadinas, karena berbeda tipe data');
 
                 $('.title').text('Edit Surat Keluar');
 

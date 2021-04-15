@@ -18,7 +18,7 @@
                             <label class="kepada"></label>
                             <input type="text" class="form-control" name="suratkeluar_kepada" id="suratkeluar_kepada">
 
-                            <label class="text-danger kepada-danger"" ></label><br><br>
+                            <br>
 
 
 

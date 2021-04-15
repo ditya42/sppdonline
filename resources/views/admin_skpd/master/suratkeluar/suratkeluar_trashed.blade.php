@@ -177,6 +177,7 @@
               dataType : "JSON",
               success : function(data){
                 $('#modalsuratkeluar').modal('show');
+                $('.kepada').text('Kalau Diubah, Harap Ubah Juga Tujuan Surat Di Nota Dinas yang bersangkutan karena berbeda tipe data');
 
                 $('.title').text('Edit Surat Keluar');
 

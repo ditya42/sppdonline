@@ -23,6 +23,7 @@
   <a href=".surat" class="has-arrow"><i class="fa fa-bars"></i><span>Pengajuan Surat</span></a>
   <ul>
     <li class="@yield('active-notadinas')"><a href="{{ route('pegawai.notadinas.index') }}">Nota Dinas Perjalanan</a></li>
+    <li class="@yield('active-suratkeluarpengajuan')"><a href="{{ route('pengajuansuratkeluar.index') }}">Pengajuan Surat Keluar</a></li>
   </ul>
   </li>
 

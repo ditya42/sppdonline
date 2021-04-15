@@ -206,6 +206,7 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
         //pengajuan surat keluar pegawai
         Route::get('user/pengajuansuratkeluar/data','PengajuanSuratKeluarController@data')->name('pengajuansuratkeluar.data');
         Route::get('user/pengajuansuratkeluar','PengajuanSuratKeluarController@index')->name('pengajuansuratkeluar.index');
+        Route::post('user/pengajuansuratkeluar','PengajuanSuratKeluarController@store')->name('pengajuansuratkeluar.store');
 
     });
 
