@@ -50,6 +50,7 @@
 
             <!-- Modal Dialogs ========= -->
             @include('pegawai.pengajuansuratkeluar.modal.modal_suratkeluar')
+            @include('pegawai.pengajuansuratkeluar.modal.modal_suratkeluarshow')
 
 
         </div>
@@ -119,7 +120,7 @@
                   { data: 'DT_RowIndex', orderable: false, searchable: false},
                   { data: 'kepada' },
                   { data: 'tanggal', render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ) },
-                  { data: 'jenissurat_nama' },
+                  { data: 'kode_surat' },
                   { data: 'nomor' },
                   { data: 'format_nomor' },
                   { data: 'perihal' },
@@ -201,6 +202,39 @@
             });
           }
 
+
+
+          function showForm(id){
+            save_method = "edit";
+
+            $('#loading_show').hide();
+            $('input[name=_method]').val('PATCH');
+            $('#modalsuratkeluarshow form')[0].reset();
+            $.ajax({
+              url : "pengajuansuratkeluar/"+id+"/edit",
+              type : "GET",
+              dataType : "JSON",
+              success : function(data){
+                $('#modalsuratkeluarshow').modal('show');
+                $('.kepada_show').text('Tujuan Surat');
+                $('.title').text('Detail Surat Keluar');
+
+                $('#id_show').val(data.draftsuratkeluar_id);
+                $('#suratkeluar_kepada_show').val(data.kepada);
+                $('#suratkeluar_tanggal_show').val(data.tanggal);
+                $('#suratkeluar_tanggal_show').val(data.tanggal);
+                $('#suratkeluar_jenissurat_show').val(data.jenis_surat);
+                $('#suratkeluar_format_show').val(data.format_nomor);
+                $('#suratkeluar_hal_show').val(data.perihal);
+
+
+              },
+              error : function(){
+                toastr.error('Gagal', 'Mohon Maaf Terjadi Kesalahan Pada Server');
+              }
+            });
+          }
+
     function deleteData(id) {
       swal({
         title: "Apakah kamu yakin ?",
@@ -215,7 +249,7 @@
       .then((willDelete) => {
         if (willDelete.value) {
             $.ajax({
-            url : "suratkeluar/"+id,
+            url : "pengajuansuratkeluar/"+id,
             type : "POST",
             data: {
                 "_method" : "DELETE",

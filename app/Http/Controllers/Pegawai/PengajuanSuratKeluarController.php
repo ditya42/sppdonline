@@ -187,4 +187,12 @@ class PengajuanSuratKeluarController extends Controller
 
 
     }
+
+    public function destroy($id)
+    {
+        $db = PengajuanSuratKeluar::find($id);
+
+        $db->delete();
+
+    }
 }
