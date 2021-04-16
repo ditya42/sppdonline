@@ -5,7 +5,7 @@
         {{ csrf_field() }} {{ method_field('POST') }}
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="title" id="modalnotadinas-label"></h4>
+                <h4 class="title" id="modalsuratkeluar-label"></h4>
             </div>
                 <div class="modal-body">
                   <input type="hidden" id="id" name="id">

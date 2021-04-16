@@ -148,4 +148,43 @@ class PengajuanSuratKeluarController extends Controller
 
 
     }
+
+    public function edit($id)
+    {
+        $db = DB::table('sppd_draftsuratkeluar')
+
+
+            ->where('draftsuratkeluar_id', $id)
+            ->first();
+
+        // dd($db);
+        echo json_encode($db);
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $year = Carbon::now()->format('Y');
+        $user = auth()->user();
+
+        $db = PengajuanSuratKeluar::find($id);
+        // dd($db);
+
+
+            $db->jenis_surat = $request['suratkeluar_jenissurat'];
+            $db->format_nomor = $request['suratkeluar_format'];
+            $db->kepada = $request['suratkeluar_kepada'];
+            $db->tanggal = $request['suratkeluar_tanggal'];
+            $db->perihal = $request['suratkeluar_hal'];
+            $db->tahun = $year;
+            $db->skpd = $user->skpd_id;
+            $db->pembuat = $user->pegawai_id;
+
+            $db->update();
+
+            return response()->json(['code'=>200, 'status' => 'Dasar Surat Berhasil Disimpan'], 200);
+
+
+
+    }
 }

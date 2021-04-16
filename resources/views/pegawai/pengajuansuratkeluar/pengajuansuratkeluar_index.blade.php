@@ -136,7 +136,7 @@
                   $('#loading').show();
                   var id = $('#id').val();
                   if(save_method == "add") url = "{{ route('pengajuansuratkeluar.store') }}";
-                  else url = "suratkeluar/"+id;
+                  else url = "pengajuansuratkeluar/"+id;
 
                   $.ajax({
                   url : url,
@@ -177,22 +177,22 @@
             $('input[name=_method]').val('PATCH');
             $('#modalsuratkeluar form')[0].reset();
             $.ajax({
-              url : "suratkeluar/"+id+"/edit",
+              url : "pengajuansuratkeluar/"+id+"/edit",
               type : "GET",
               dataType : "JSON",
               success : function(data){
                 $('#modalsuratkeluar').modal('show');
-
+                $('.kepada').text('Tujuan Surat');
                 $('.title').text('Edit Surat Keluar');
 
-                $('#id').val(data.id);
+                $('#id').val(data.draftsuratkeluar_id);
                 $('#suratkeluar_kepada').val(data.kepada);
                 $('#suratkeluar_tanggal').val(data.tanggal);
                 $('#suratkeluar_tanggal').val(data.tanggal);
                 $('#suratkeluar_jenissurat').val(data.jenis_surat);
                 $('#suratkeluar_format').val(data.format_nomor);
                 $('#suratkeluar_hal').val(data.perihal);
-                $('.kepada').text('Tujuan Surat');
+
 
               },
               error : function(){
