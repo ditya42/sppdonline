@@ -210,6 +210,7 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
         Route::post('user/pengajuansuratkeluar','PengajuanSuratKeluarController@store')->name('pengajuansuratkeluar.store');
         Route::delete('user/pengajuansuratkeluar/{id}','PengajuanSuratKeluarController@destroy')->name('pengajuansuratkeluar.destroy');
         Route::get('user/pengajuansuratkeluar/{id}/edit','PengajuanSuratKeluarController@edit')->name('pengajuansuratkeluar.edit');
+        Route::get('user/pengajuansuratkeluar/setujui/{id}','PengajuanSuratKeluarController@setujui')->name('pengajuansuratkeluar.setujui');
 
 
     });

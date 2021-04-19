@@ -195,4 +195,80 @@ class PengajuanSuratKeluarController extends Controller
         $db->delete();
 
     }
+
+    public function setujui($id)
+    {
+        $pengajuan = PengajuanSuratKeluar::where('draftsuratkeluar_id',$id)->first();
+
+        // $cekPNS = PegawaiBerangkat::where('id_notadinas',$id)->first();
+
+        // $cekDasar = DasarNota::where('id_notadinas',$id)->first();
+
+        //dd($notadinas);
+        if($pengajuan->nomor){
+            return response()->json(['code'=>400, 'status' => 'Surat Sudah Terdaftar'], 200);
+        }
+
+        // if($cekPNS == null){
+        //     return response()->json(['code'=>500, 'status' => 'Tidak Ada PNS Yang Berangkat'], 200);
+        // }
+
+        // if($cekDasar == null){
+        //     return response()->json(['code'=>600, 'status' => 'Tidak Ada Dasar Surat'], 200);
+        // }
+
+        $cek = DB::table('sppd_suratkeluar')
+            ->where('tahun', '=', $pengajuan->tahun)
+            ->where('skpd', '=', $pengajuan->skpd)
+            ->latest()
+            ->first();
+
+        // $pejabat = Jabatan::where('jabatan_id',$notadinas->kepada)->first();
+
+            //dd($cek);
+        $jenissurat = JenisSurat::where('jenissurat_id',$pengajuan->jenis_surat)->first();
+
+        if($cek == null){
+            $db = new SuratKeluar;
+            $db->nomor = 1;
+            $db->nomor_lengkap = $jenissurat->kode_surat . 1 . $pengajuan->format_nomor;
+            $db->kepada = $pengajuan->kepada;
+            $db->tanggal = $pengajuan->tanggal;
+            $db->perihal = $pengajuan->perihal;
+            $db->tahun = $pengajuan->tahun;
+            $db->skpd = $pengajuan->skpd;
+            $db->id_draft = $pengajuan->draftsuratkeluar_id;
+            $db->format_nomor = $pengajuan->format_nomor;
+            $db->jenis_surat = $pengajuan->jenis_surat;
+
+
+
+            $db->save();
+
+            $pengajuan->nomor = $db->nomor;
+            $pengajuan->update();
+
+            return response()->json(['code'=>200, 'status' => 'Surat Keluar berhasil dicatat ke Buku Surat Keluar'], 200);
+        }else{
+            $db = new SuratKeluar;
+            $db->nomor = $cek->nomor+1;
+            $cek1 = $cek->nomor+1;
+            $db->nomor_lengkap = $jenissurat->kode_surat . $cek1 . $pengajuan->format_nomor;
+            $db->kepada = $pengajuan->kepada;
+            $db->tanggal = $pengajuan->tanggal;
+            $db->perihal = $pengajuan->perihal;
+            $db->tahun = $pengajuan->tahun;
+            $db->skpd = $pengajuan->skpd;
+            $db->id_draft = $pengajuan->draftsuratkeluar_id;
+            $db->format_nomor = $pengajuan->format_nomor;
+            $db->jenis_surat = $pengajuan->jenis_surat;
+
+            $db->save();
+
+            $pengajuan->nomor = $db->nomor;
+            $pengajuan->update();
+            return response()->json(['code'=>200, 'status' => 'Surat Keluar berhasil dicatat ke Buku Surat Keluar'], 200);
+        }
+    }
+
 }

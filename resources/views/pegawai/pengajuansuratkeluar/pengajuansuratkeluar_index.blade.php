@@ -273,6 +273,57 @@
 
 
 
+    function setujui(id) {
+      swal({
+        title: "Apakah Surat Keluar Ini Sudah Disetujui dan Di Tanda Tangani Pimpinan?",
+        // text: "Sudah Disetujui dan Di?",
+        icon: "warning",
+        confirmButtonText: 'Ya',
+        showCancelButton: true,
+
+
+        dangerMode: true,
+      })
+      .then((terima) => {
+        if (terima.value) {
+            $.ajax({
+            url : "pengajuansuratkeluar/setujui/"+id,
+            type : "POST",
+            data: {
+                "_method" : "GET",
+                "_token": "{{ csrf_token() }}"
+            },
+            success : function(data){
+                if(data.code === 400) {
+                    swal(data.status);
+                            table.ajax.reload();
+
+                      }
+
+                if(data.code === 200) {
+                    swal(data.status);
+                            table.ajax.reload();
+
+                      }
+
+
+            //   swal("Nota Dinas Berhasil Didaftarkan", {
+            //     icon: "success",
+            //   });
+            //   table.ajax.reload();
+            },
+            error : function() {
+              swal("Tidak Dapat Didaftarkan");
+            }
+          });
+        } else {
+          swal("Batal di Daftarkan");
+        }
+      });
+    }
+
+
+
 
 
     </script>

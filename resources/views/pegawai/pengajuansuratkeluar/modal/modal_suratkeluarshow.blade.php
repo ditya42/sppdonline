@@ -20,16 +20,11 @@
 
                             <br>
 
-
-
                           <label for="suratkeluar_tanggal_show">Tanggal Surat</label>
                           <input class="form-control" type="date" id="suratkeluar_tanggal_show" name="suratkeluar_tanggal_show"><br>
 
 
-
-
-
-                            <label for="suratkeluar_jenis_show">Jenis Surat</label>
+                        <label for="suratkeluar_jenis_show">Jenis Surat</label>
                         <select name="suratkeluar_jenissurat_show" id="suratkeluar_jenissurat_show" class="form-control">
                             <option value="">Pilih Jenis Surat</option>
                             @foreach ($jenissurat as $jenis)
