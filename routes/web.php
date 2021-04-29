@@ -203,6 +203,9 @@ Route::group(['middleware' => ['web','role:Pegawai']] , function() {
         //setujui
         Route::get('user/notadinas/setujui/{id}','NotaDinasPegawaiController@setujui')->name('pegawainotadinas.setujui');
 
+        //cetak notadinas
+        Route::get('user/notadinas/cetak/{id}','NotaDinasPegawaiController@cetak')->name('pegawainotadinas.cetak');
+
         //pengajuan surat keluar pegawai
         Route::patch('user/pengajuansuratkeluar/{id}','PengajuanSuratKeluarController@update')->name('pengajuansuratkeluar.update');
         Route::get('user/pengajuansuratkeluar/data','PengajuanSuratKeluarController@data')->name('pengajuansuratkeluar.data');

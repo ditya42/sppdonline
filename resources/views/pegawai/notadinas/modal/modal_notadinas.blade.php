@@ -26,7 +26,7 @@
                             <label class="dari"></label>
 
                             <div class="input-group mb-1">
-                              <select class="form-control select-jabatan" name="notadinas_dari" id="notadinas_dari">
+                              <select class="form-control select-pegawai" name="notadinas_dari" id="notadinas_dari">
                               </select>
                             </div><br>
 

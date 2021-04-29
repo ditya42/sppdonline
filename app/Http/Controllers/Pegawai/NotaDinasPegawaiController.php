@@ -16,12 +16,13 @@ use App\Model\Master\Jabatan;
 use App\Model\NotaDinas;
 use App\Model\PegawaiBerangkat;
 use App\Model\SuratKeluar;
+use App\Pegawai;
 use App\SKPD;
 use Illuminate\Support\Facades\Auth;
 use JsValidator;
 use Carbon\Carbon;
-
-
+use PhpOffice\PhpWord\Template;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class NotaDinasPegawaiController extends Controller
 {
@@ -61,7 +62,7 @@ class NotaDinasPegawaiController extends Controller
 
                         <a href="' .route('pegawaiberangkat',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
                         <a href="' .route('dasarnotadinas.index',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
-                            <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
+                            <a href="' .route('pegawainotadinas.cetak',$data->id). '" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
                             <a onclick="showForm('.$data->id.')" class="btn btn-success btn-sm"><i class="fa fa-eye"> Show</i></a>
 
 
@@ -84,7 +85,7 @@ class NotaDinasPegawaiController extends Controller
 
                             <a onclick="setujui('.$data->id.')" class="btn btn-sm btn-success"><i class="fa fa-hand-pointer-o"> Daftarkan</i></a>
 
-                            <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
+                            <a href="' .route('pegawainotadinas.cetak',$data->id). '" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
 
                             <a onclick="editForm('.$data->id.')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"> Edit</i></a>
 
@@ -360,6 +361,81 @@ class NotaDinasPegawaiController extends Controller
             $notadinas->update();
             return response()->json(['code'=>200, 'status' => 'Nota Dinas berhasil dicatat ke Buku Surat Keluar'], 200);
         }
+
+
+    }
+
+    public function cetak ($id)
+    {
+        $notadinas = NotaDinas::findOrFail($id);
+
+        $kepada = Jabatan::where('jabatan_id',$notadinas->kepada)->first();
+
+        $dari = DB::table('tb_pegawai')
+        ->leftJoin('tb_jabatan','tb_pegawai.jabatan_id','=','tb_jabatan.jabatan_id')
+        ->where('pegawai_id', '=', $notadinas->penandatangan)
+        ->first();
+        // dd($dari);
+
+        $pegawaiberangkat = PegawaiBerangkat::where('id_notadinas',$id)->first();
+
+        $dasarnota = DasarNota::where('id_notadinas',$id)->first();
+
+        $jenissurat = JenisSurat::where('jenissurat_id',$notadinas->jenis_surat)->first();
+
+        // $kodesurat = Dasar::findOrFail($jenissurat);
+
+        if($pegawaiberangkat == null){
+            return redirect()->back()->with('alert', 'Tidak ada Pegawai Berangkat');
+        }
+
+        if($dasarnota == null){
+            return redirect()->back()->with('alert', 'Tidak ada Dasar Surat');
+        }
+
+        //dd($id);
+
+
+        $nip = Pegawai::findOrFail($pegawaiberangkat->id_pegawai);
+
+        // dd($nip);
+        $tanggal = tanggal_indonesia_huruf($notadinas->tanggal_surat);
+
+        $penandatangan = Pegawai::findOrFail($notadinas->penandatangan);
+
+        $templateProcessor = new TemplateProcessor('template/BKPP_single.docx');
+        $templateProcessor->setValue('kepada', $kepada->jabatan_nama);
+        $templateProcessor->setValue('dari', $dari->jabatan_nama);
+        $templateProcessor->setValue('tanggal', $tanggal);
+        $templateProcessor->setValue('jenis_surat', $jenissurat->kode_surat);
+        $templateProcessor->setValue('nomor', $notadinas->nomor);
+        $templateProcessor->setValue('format_nomor', $notadinas->format_nomor);
+        $templateProcessor->setValue('lampiran', $notadinas->lampiran);
+        $templateProcessor->setValue('perihal', $notadinas->Hal);
+        $templateProcessor->setValue('dasar_surat', $dasarnota->id_dasar);
+        $templateProcessor->setValue('nama_pegawai', $pegawaiberangkat->id_pegawai);
+        $templateProcessor->setValue('nip', $nip->pegawai_nip);
+        $templateProcessor->setValue('golongan', $nip->golongan_id);
+        $templateProcessor->setValue('jabatan', $nip->jabatan_id);
+        $templateProcessor->setValue('tujuan', $notadinas->tujuan);
+        $templateProcessor->setValue('jumlah_hari', 2);
+        $templateProcessor->setValue('tanggal_dari', $notadinas->tanggal_dari);
+        $templateProcessor->setValue('tanggal_sampai', $notadinas->tanggal_sampai);
+        $templateProcessor->setValue('anggaran', $notadinas->anggaran);
+        $templateProcessor->setValue('disposisi1', $notadinas->disposisi1);
+        $templateProcessor->setValue('disposisi2', $notadinas->disposisi2);
+        $templateProcessor->setValue('jabatan_dari', $dari->jabatan_id);
+        $templateProcessor->setValue('nama_pegawai_dari', $dari->pegawai_nama);
+        $templateProcessor->setValue('golongan_dari', $dari->golongan_id);
+        $templateProcessor->setValue('nip_dari', $dari->pegawai_nip);
+
+        $filename =  "notadinas " . $notadinas->id;
+        $templateProcessor->saveAs($filename .  '.docx');
+
+
+        // return response()->json(['code'=>200, 'status' => 'Nota Dinas berhasil dicatat ke Buku Surat Keluar'], 200);
+
+        return response()->download($filename . '.docx');
 
 
     }
