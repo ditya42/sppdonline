@@ -214,7 +214,7 @@
                 $('#label_kepada').text('Tujuan Surat : '+data.jabatan_kepada);
                 $('.kepada').text('Ganti Tujuan Surat');
 
-                $('#label_dari').text('Pengirim Surat: '+data.jabatan_dari);
+                $('#label_dari').text('Pengirim Surat: '+data.nama_dari);
                 $('.dari').text('Ganti Pengirim Surat');
 
                 $('#label_disposisi1').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi1);
