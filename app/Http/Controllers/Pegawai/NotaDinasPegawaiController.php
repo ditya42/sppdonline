@@ -429,6 +429,7 @@ class NotaDinasPegawaiController extends Controller
         $golonganpenandatangan = Golongan::findOrFail($penandatangan->golongan_id);
         $jabatanpenandatangan = Jabatan::findOrFail($penandatangan->jabatan_id);
         $skpdpenandatangan = SKPD::findOrFail($penandatangan->skpd_id);
+
         // dd($golonganpenandatangan);
 
 
@@ -454,17 +455,17 @@ class NotaDinasPegawaiController extends Controller
 
 
 
-
+        $namaskpd = $skpdpenandatangan->skpd_singkatan;
 
         //template
-        $templateProcessor = new TemplateProcessor('template/BKPP_single.docx');
+        $templateProcessor = new TemplateProcessor('template/' . $namaskpd. '_single.docx');
         $templateProcessor->setValue('kepada', $kepada->jabatan_nama);
 
         if(str_contains($dari->jabatan_nama, 'Kepala Badan') OR str_contains($dari->jabatan_nama, 'Kepala Dinas') OR
         str_contains($dari->jabatan_nama, 'Sekretaris')){
             $templateProcessor->setValue('dari', $dari->jabatan_nama . " Kabupaten Tabalong");
         }else{
-            $templateProcessor->setValue('dari', $dari->jabatan_nama . " " . $skpdpenandatangan->skpd_nama);
+            $templateProcessor->setValue('dari', $dari->jabatan_nama);
         }
 
         $templateProcessor->setValue('dari', $dari->jabatan_nama);
@@ -516,7 +517,7 @@ class NotaDinasPegawaiController extends Controller
         str_contains($jabatanpenandatangan->jabatan_nama, 'Sekretaris')){
             $templateProcessor->setValue('jabatan_dari', $jabatanpenandatangan->jabatan_nama . " Kabupaten Tabalong");
         }else{
-            $templateProcessor->setValue('jabatan_dari', $jabatanpenandatangan->jabatan_nama . " " . $skpdpenandatangan->skpd_nama);
+            $templateProcessor->setValue('jabatan_dari', $jabatanpenandatangan->jabatan_nama);
         }
 
         $templateProcessor->setValue('nama_pegawai_dari', namaGelar($penandatangan));
