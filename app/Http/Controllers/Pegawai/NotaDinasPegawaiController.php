@@ -379,19 +379,19 @@ class NotaDinasPegawaiController extends Controller
         ->first();
         // dd($dari);
 
-        $pegawaiberangkat = PegawaiBerangkat::where('id_notadinas',$id)->first();
-
+        $pegawaiberangkat = PegawaiBerangkat::where('id_notadinas',$id)->get();
+        $countpegawaiberangkat = count($pegawaiberangkat);
 
 
         $dasarnota = DasarNota::where('id_notadinas',$id)->get();
         $countdasarnota = count($dasarnota);
-        // dd($dasarnota);
+        // dd($pegawaiberangkat);
 
         $jenissurat = JenisSurat::where('jenissurat_id',$notadinas->jenis_surat)->first();
 
         // $kodesurat = Dasar::findOrFail($jenissurat);
 
-        if($pegawaiberangkat == null){
+        if($countpegawaiberangkat == 0){
             return redirect()->back()->with('alert', 'Tidak ada Pegawai Berangkat');
         }
 
@@ -399,20 +399,19 @@ class NotaDinasPegawaiController extends Controller
             return redirect()->back()->with('alert', 'Tidak ada Dasar Surat');
         }
 
-        //data pegawai yang berangkat
-        $datapegawai = Pegawai::where('pegawai_id',$pegawaiberangkat->id_pegawai)->first();
+        if($countpegawaiberangkat > 1){
+            //data pegawai yang berangkat
+
+        // dd($datapegawai);
+
+
+        // Pegawai::where('pegawai_id',$pegawaiberangkat->id_pegawai)->first();
 
 
         //dd($id);
 
 
-        $nip = Pegawai::findOrFail($pegawaiberangkat->id_pegawai);
 
-        $golongan = Golongan::findOrFail($nip->golongan_id);
-
-        $jabatan = Jabatan::findOrFail($nip->jabatan_id);
-
-        // dd($nip);
 
         //tanggal
         $tanggal = tanggal_indonesia_huruf($notadinas->tanggal_surat);
@@ -458,7 +457,7 @@ class NotaDinasPegawaiController extends Controller
         $namaskpd = $skpdpenandatangan->skpd_singkatan;
 
         //template
-        $templateProcessor = new TemplateProcessor('template/' . $namaskpd. '_single.docx');
+        $templateProcessor = new TemplateProcessor('template/' . $namaskpd. '_jamak.docx');
         $templateProcessor->setValue('kepada', $kepada->jabatan_nama);
 
         if(str_contains($dari->jabatan_nama, 'Kepala Badan') OR str_contains($dari->jabatan_nama, 'Kepala Dinas') OR
@@ -491,11 +490,28 @@ class NotaDinasPegawaiController extends Controller
         }
 
         $templateProcessor->setValue('isi', $notadinas->isi);
-        $templateProcessor->setValue('nama_pegawai', namaGelar($datapegawai));
-        $templateProcessor->setValue('nip',  konversi_nip($nip->pegawai_nip));
-        $templateProcessor->setValue('golongan_nama', $golongan->golongan_nama);
-        $templateProcessor->setValue('golongan_kode', $golongan->golongan_kode);
-        $templateProcessor->setValue('jabatan', $jabatan->jabatan_nama);
+
+        $templateProcessor->cloneRow('nama', $countpegawaiberangkat);
+        // dd($pegawaiberangkat);
+        foreach ($pegawaiberangkat as $keypegawai => $listpegawai){
+            $i = $keypegawai + 1;
+            $templateProcessor->setValue("no1#$i", $i);
+
+            $peg = Pegawai::find($listpegawai->id_pegawai);
+            // dd($listpegawai);
+            $golpeg = Golongan::find($peg->golongan_id);
+            $jabpeg = Jabatan::find($peg->jabatan_id);
+
+            $templateProcessor->setValue("nama#$i", namaGelar($peg));
+            $templateProcessor->setValue("nip_peg#$i",  konversi_nip($peg->pegawai_nip));
+            $templateProcessor->setValue("gol#$i", $golpeg->golongan_nama);
+            $templateProcessor->setValue("kode#$i", $golpeg->golongan_kode);
+            $templateProcessor->setValue("jab#$i", $jabpeg->jabatan_nama);
+
+        }
+
+
+
         $templateProcessor->setValue('tujuan', $notadinas->tujuan);
         $templateProcessor->setValue('jumlah_hari', $numberDays);
         $templateProcessor->setValue('jumlah_huruf', $numberterbilang);
@@ -531,6 +547,139 @@ class NotaDinasPegawaiController extends Controller
         // return response()->json(['code'=>200, 'status' => 'Nota Dinas berhasil dicatat ke Buku Surat Keluar'], 200);
 
         return response()->download($filename . '.docx');
+        }else{
+            //data pegawai yang berangkat
+        $pegawaiberangkat1 = PegawaiBerangkat::where('id_notadinas',$id)->first();
+
+        $datapegawai = Pegawai::where('pegawai_id',$pegawaiberangkat1->id_pegawai)->first();
+
+
+
+        // $nip = Pegawai::findOrFail($pegawaiberangkat1->id_pegawai);
+
+        // dd($nip);
+
+        $golongan = Golongan::findOrFail($datapegawai->golongan_id);
+
+        $jabatan = Jabatan::findOrFail($datapegawai->jabatan_id);
+
+        // dd($nip);
+
+        //tanggal
+        $tanggal = tanggal_indonesia_huruf($notadinas->tanggal_surat);
+
+        $tanggaldari = tanggal_indonesia_huruf($notadinas->tanggal_dari);
+        $tanggaldari = substr($tanggaldari, 0 , -4);
+
+        $tanggalsampai = tanggal_indonesia_huruf($notadinas->tanggal_sampai);
+        // $tanggalsampai = substr($tanggalsampai, 0 , -4);
+
+        //penandatangan
+        $penandatangan = Pegawai::findOrFail($notadinas->penandatangan);
+        $golonganpenandatangan = Golongan::findOrFail($penandatangan->golongan_id);
+        $jabatanpenandatangan = Jabatan::findOrFail($penandatangan->jabatan_id);
+        $skpdpenandatangan = SKPD::findOrFail($penandatangan->skpd_id);
+
+        // dd($golonganpenandatangan);
+
+
+
+        //days
+        $startTimeStamp = strtotime($notadinas->tanggal_dari);
+        $endTimeStamp = strtotime($notadinas->tanggal_sampai);
+
+        $timeDiff = abs($endTimeStamp - $startTimeStamp);
+
+        $numberDays = $timeDiff/86400+1;  // 86400 seconds in one day
+
+        // convert to integer
+        $numberDays = intval($numberDays);
+
+        $numberterbilang = terbilang($numberDays);
+
+        //disposisi
+        $disposisi1 = Jabatan::findOrFail($notadinas->disposisi1);
+
+
+
+        $namaskpd = $skpdpenandatangan->skpd_singkatan;
+        // dd($penandatangan);
+
+        //template
+        $templateProcessor = new TemplateProcessor('template/' . $namaskpd. '_single.docx');
+        $templateProcessor->setValue('kepada', $kepada->jabatan_nama);
+
+        if(str_contains($dari->jabatan_nama, 'Kepala Badan') OR str_contains($dari->jabatan_nama, 'Kepala Dinas') OR
+        str_contains($dari->jabatan_nama, 'Sekretaris')){
+            $templateProcessor->setValue('dari', $dari->jabatan_nama . " Kabupaten Tabalong");
+        }else{
+            $templateProcessor->setValue('dari', $dari->jabatan_nama);
+        }
+
+        $templateProcessor->setValue('dari', $dari->jabatan_nama);
+        $templateProcessor->setValue('tanggal', $tanggal);
+        $templateProcessor->setValue('jenis_surat', $jenissurat->kode_surat);
+        $templateProcessor->setValue('nomor', $notadinas->nomor);
+        $templateProcessor->setValue('format_nomor', $notadinas->format_nomor);
+        $templateProcessor->setValue('lampiran', $notadinas->lampiran);
+        $templateProcessor->setValue('perihal', $notadinas->Hal);
+
+        // dd($dasarnota);
+
+        $templateProcessor->cloneRow('dasar_surat', $countdasarnota);
+        foreach ($dasarnota as $key => $list){
+
+            $i = $key + 1;
+            // dd($key);
+            $templateProcessor->setValue("no#$i", $i);
+            // dd($list->id_dasar);
+            $dasar = Dasar::find($list->id_dasar);
+            $templateProcessor->setValue("dasar_surat#$i", $dasar->peraturan);
+            $templateProcessor->setValue("tentang#$i", $dasar->tentang);
+        }
+
+        $templateProcessor->setValue('isi', $notadinas->isi);
+        $templateProcessor->setValue('nama_pegawai', namaGelar($datapegawai));
+        $templateProcessor->setValue('nip',  konversi_nip($datapegawai->pegawai_nip));
+        $templateProcessor->setValue('golongan_nama', $golongan->golongan_nama);
+        $templateProcessor->setValue('golongan_kode', $golongan->golongan_kode);
+        $templateProcessor->setValue('jabatan', $jabatan->jabatan_nama);
+        $templateProcessor->setValue('tujuan', $notadinas->tujuan);
+        $templateProcessor->setValue('jumlah_hari', $numberDays);
+        $templateProcessor->setValue('jumlah_huruf', $numberterbilang);
+        $templateProcessor->setValue('tanggal_dari', $tanggaldari);
+        $templateProcessor->setValue('tanggal_sampai', $tanggalsampai);
+        $templateProcessor->setValue('anggaran', $notadinas->anggaran);
+
+        if($notadinas->disposisi2 == null){
+            $templateProcessor->setValue('disposisi2', null);
+        }else{
+            $disposisi2 = Jabatan::find($notadinas->disposisi2);
+            $templateProcessor->setValue('disposisi2', $disposisi2->jabatan_nama);
+
+        }
+        $templateProcessor->setValue('disposisi1', $disposisi1->jabatan_nama);
+
+        if(str_contains($jabatanpenandatangan->jabatan_nama, 'Kepala Badan') OR str_contains($jabatanpenandatangan->jabatan_nama, 'Kepala Dinas') OR
+        str_contains($jabatanpenandatangan->jabatan_nama, 'Sekretaris')){
+            $templateProcessor->setValue('jabatan_dari', $jabatanpenandatangan->jabatan_nama . " Kabupaten Tabalong");
+        }else{
+            $templateProcessor->setValue('jabatan_dari', $jabatanpenandatangan->jabatan_nama);
+        }
+
+        $templateProcessor->setValue('nama_pegawai_dari', namaGelar($penandatangan));
+        $templateProcessor->setValue('golongan_dari', $golonganpenandatangan->golongan_nama );
+        $templateProcessor->setValue('nip_dari', konversi_nip($penandatangan->pegawai_nip));
+
+        $filename =  "notadinas " . $notadinas->id;
+        $templateProcessor->saveAs($filename .  '.docx');
+
+        // return response()->json(['code'=>200, 'status' => 'Nota Dinas berhasil dicatat ke Buku Surat Keluar'], 200);
+
+        return response()->download($filename . '.docx');
+
+        }
+
 
 
     }

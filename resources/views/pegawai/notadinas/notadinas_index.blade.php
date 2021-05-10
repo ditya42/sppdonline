@@ -267,7 +267,7 @@
 
                 $('#label_kepada_show').text('Tujuan Surat : '+data.jabatan_kepada);
 
-                $('#label_dari_show').text('Pengirim Surat: '+data.jabatan_dari);
+                $('#label_dari_show').text('Pengirim Surat: '+data.nama_dari);
 
                 $('#label_disposisi1_show').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi1);
 
