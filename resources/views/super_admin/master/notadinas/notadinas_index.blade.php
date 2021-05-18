@@ -159,6 +159,10 @@
           });
         });
 
+        @if (session('alert'))
+        swal("{{ session('alert') }}");
+        @endif
+
         $(function() {
           $('#modalnotadinas form').validator().on('submit', function(e) {
               if(!e.isDefaultPrevented()) {

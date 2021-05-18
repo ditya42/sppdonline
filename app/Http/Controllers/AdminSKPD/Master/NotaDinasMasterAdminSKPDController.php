@@ -108,7 +108,7 @@ class NotaDinasMasterAdminSKPDController extends Controller
 
                         <a href="' .route('pegawaiberangkatadminskpdmaster',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-odnoklassniki"> PNS Berangkat</i></a>
                         <a href="' .route('dasarnotaadminskpdmaster',$data->id). '" class="btn btn-primary btn-sm"><i class="fa fa-book"> Dasar Surat</i></a>
-                            <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
+                            <a href="' .route('adminskpdnotadinas.cetak',$data->id). '" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
                             <a onclick="showForm('.$data->id.')" class="btn btn-success btn-sm"><i class="fa fa-eye"> Show</i></a>
 
 
@@ -131,7 +131,7 @@ class NotaDinasMasterAdminSKPDController extends Controller
 
                             <a onclick="setujui('.$data->id.')" class="btn btn-sm btn-success"><i class="fa fa-hand-pointer-o"> Daftarkan</i></a>
 
-                            <a href="" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
+                            <a href="' .route('adminskpdnotadinas.cetak',$data->id). '" class="btn btn-sm btn-warning"><i class="fa fa-print"> cetak</i></a>
 
                             <a onclick="editForm('.$data->id.')" class="btn btn-primary btn-sm"><i class="fa fa-pencil"> Edit</i></a>
 

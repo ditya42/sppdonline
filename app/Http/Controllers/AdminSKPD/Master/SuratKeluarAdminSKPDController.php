@@ -296,4 +296,8 @@ class SuratKeluarAdminSKPDController extends Controller
 
     }
 
+    public function cetak ($id){
+
+    }
+
 }

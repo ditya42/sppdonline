@@ -60,7 +60,8 @@ Route::group(['middleware' => ['web','role:Super Admin']] , function() {
     Route::get('superadmin/notadinas/setujui/{id}','NotaDinasSuperAdminController@setujui')->name('superadminnotadinas.setujui');
 
 
-
+     //cetak
+     Route::get('superadmin/notadinas/cetak/{id}','NotaDinasSuperAdminController@cetak')->name('superadminnotadinas.cetak');
 
   });
 
@@ -96,6 +97,9 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
     Route::get('adminskpd/suratkeluar/trash','SuratKeluarAdminSKPDController@trash')->name('adminskpdsuratkeluar.trash');
     Route::resource('adminskpd/suratkeluar','SuratKeluarAdminSKPDController', ['as' => 'adminskpdsuratkeluar']);
 
+    //cetak buku surat keluar
+    Route::post('adminskpd/suratkeluar/cetak','SuratKeluarAdminSKPDController@cetak')->name('adminskpdsuratkeluar.cetak');
+
     //master adminskpd notadinas
     Route::get('adminskpd/masternotadinas/data','NotaDinasMasterAdminSKPDController@data')->name('adminskpdmasternotadinas.data');
 
@@ -107,6 +111,9 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
 
     Route::get('adminskpd/masternotadinas/apiskpd/','NotaDinasMasterAdminSKPDController@apiskpd')->name('adminskpdmasternotadinas.apiskpd');
     Route::resource('adminskpd/masternotadinas','NotaDinasMasterAdminSKPDController', ['as' => 'adminskpdmaster']);
+
+
+
 
 
   });
@@ -154,6 +161,11 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
 
     //setujui
      Route::get('adminskpd/notadinas/setujui/{id}','NotaDinasAdminSKPDController@setujui')->name('adminskpdnotadinas.setujui');
+
+     //cetak notadinas
+    Route::get('adminskpd/notadinas/cetak/{id}','NotaDinasAdminSKPDController@cetak')->name('adminskpdnotadinas.cetak');
+
+
   });
 
 
