@@ -32,6 +32,9 @@ Route::group(['middleware' => ['web','role:Super Admin']] , function() {
     Route::get('superadmin/suratkeluar/trash','SuratKeluarSuperAdminController@trash')->name('superadminsuratkeluar.trash');
     Route::resource('superadmin/suratkeluar','SuratKeluarSuperAdminController', ['as' => 'superadminsuratkeluar']);
 
+    //cetak buku surat keluar
+    Route::post('superadmin/cetaksuratkeluar','SuratKeluarSuperAdminController@cetak')->name('superadminsuratkeluar.cetak');
+
     //pegawai berangkat untuk notadinas superadmin
     Route::get('superadmin/notadinas/pegawaiberangkat/data','PegawaiBerangkatSuperAdminController@data')->name('superadminpegawaiberangkat.data');
     Route::get('superadmin/notadinas/pegawaiberangkat/{id}','PegawaiBerangkatSuperAdminController@index')->name('superadminpegawaiberangkat.index');
@@ -95,10 +98,13 @@ Route::group(['middleware' => ['web','role:Admin SKPD']] , function() {
     Route::post('adminskpd/suratkeluar/restore/{id}','SuratKeluarAdminSKPDController@restore')->name('adminskpdsuratkeluar.restore');
     Route::delete('adminskpd/suratkeluar/deletepermanen/{id}','SuratKeluarAdminSKPDController@deletepermanen')->name('adminskpdsuratkeluar.deletepermanen');
     Route::get('adminskpd/suratkeluar/trash','SuratKeluarAdminSKPDController@trash')->name('adminskpdsuratkeluar.trash');
-    Route::resource('adminskpd/suratkeluar','SuratKeluarAdminSKPDController', ['as' => 'adminskpdsuratkeluar']);
 
     //cetak buku surat keluar
-    Route::post('adminskpd/suratkeluar/cetak','SuratKeluarAdminSKPDController@cetak')->name('adminskpdsuratkeluar.cetak');
+    Route::post('adminskpd/cetaksuratkeluar','SuratKeluarAdminSKPDController@cetak')->name('adminskpdsuratkeluar.cetak');
+
+    Route::resource('adminskpd/suratkeluar','SuratKeluarAdminSKPDController', ['as' => 'adminskpdsuratkeluar']);
+
+
 
     //master adminskpd notadinas
     Route::get('adminskpd/masternotadinas/data','NotaDinasMasterAdminSKPDController@data')->name('adminskpdmasternotadinas.data');

@@ -22,7 +22,7 @@
                             <br>
                             <a style="margin-left: 10px;"  data-toggle="modal" onclick="addform()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Surat Keluar</button></a>
                             <a href="{{ route('superadminsuratkeluar.trash') }}" style="margin-left: 10px;"  ><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Sampah</button></a>
-                            <a href="{{ route('adminskpdsuratkeluar.trash') }}" style="margin-left: 10px;"  ><button type="button" class="btn btn-warning"><i class="fa fa-print"></i> cetak</button></a>
+                            <a style="margin-left: 10px;" onclick="cetakform()" ><button type="button" class="btn btn-warning"><i class="fa fa-print"></i> cetak</button></a>
                             <div class="table-responsive">
                                 <div class="body">
                                         <table class="table table-bordered table-hover js-basic-example dataTable table-custom" width="100%">
@@ -48,6 +48,7 @@
             </div>
             <!-- Modal Dialogs ========= -->
             @include('admin_skpd.master.suratkeluar.modal.modal_suratkeluar')
+            @include('super_admin.master.suratkeluar.modal.modal_cetak')
 
 
         </div>
@@ -65,6 +66,7 @@
 @section('script')
     <script src="{{ url('vendor/jsvalidation/js/jsvalidation.min.js' , false) }}" charset="utf-8"></script>
     {!! $JsValidator->selector('#form-input') !!}
+    {!! $JsValidatorcetak->selector('#form-cetak') !!}
 
 
     <script>
@@ -82,6 +84,17 @@
             $('.kepada').text('Tujuan Surat');
             $('#simpan').show();
             $('#loading').hide();
+        }
+
+        function cetakform() {
+
+            $('input[name=_method]').val('POST');
+            $('#modalcetak').modal('show');
+
+            $('#modalcetak form')[0].reset();
+
+            $('#cetak').show();
+            $('#loadingcetak').hide();
         }
 
         $.fn.dataTable.render.moment = function ( from, to, locale ) {

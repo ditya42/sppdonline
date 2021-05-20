@@ -12,8 +12,10 @@ use App\Model\DasarNota;
 use App\Model\NotaDinas;
 use App\Model\PegawaiBerangkat;
 use App\Model\SuratKeluar;
+use App\SKPD;
 use Illuminate\Support\Carbon;
 use JsValidator;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class SuratKeluarSuperAdminController extends Controller
 {
@@ -22,6 +24,7 @@ class SuratKeluarSuperAdminController extends Controller
         $jenissurat = JenisSurat::all();
         return view('super_admin.master.suratkeluar.suratkeluar_index', [
             'JsValidator' => JsValidator::make($this->rulesCreate(), $this->messages()),
+            'JsValidatorcetak' => JsValidator::make($this->rulesCetak(), $this->messagesCetak()),
             'jenissurat' => $jenissurat,
         ]);
     }
@@ -140,6 +143,24 @@ class SuratKeluarSuperAdminController extends Controller
             'suratkeluar_jenissurat.required' =>'Jenis surat wajib diisi',
             'suratkeluar_format.required' =>'Format nomor surat wajib diisi',
             'suratkeluar_hal.required' =>'Hal wajib diisi',
+        ];
+    }
+
+    public function rulesCetak()
+    {
+        $rules = [
+            'tahun' => 'required',
+
+        ];
+
+        return $rules;
+    }
+
+    public function messagesCetak()
+    {
+        return [
+            'tahun.required' => 'Tahun Wajib Diisi.',
+
         ];
     }
 
@@ -319,5 +340,54 @@ class SuratKeluarSuperAdminController extends Controller
 
 
 
+    }
+
+    public function cetak (Request $request){
+        $tahun = $request['tahun'];
+        $user = auth()->user();
+
+        // $skpd = SKPD::find($user->skpd_id)->first();
+        // dd($skpd);
+
+        $suratkeluar = DB::table('sppd_suratkeluar')
+                        ->leftjoin('tb_skpd', 'tb_skpd.skpd_id','=', 'sppd_suratkeluar.skpd')
+                        ->where('deleted_at', null)
+                        ->where('tahun', $tahun)
+                        ->get();
+
+        $countsuratkeluar = count($suratkeluar);
+
+
+        // dd($suratkeluar);
+
+        $templateProcessor = new TemplateProcessor('template/buku_surat_keluar/super_admin.docx');
+
+        $templateProcessor->setValue('tahun', $tahun);
+
+        $templateProcessor->cloneRow('tujuan', $countsuratkeluar);
+        foreach ($suratkeluar as $key => $list){
+
+            $i = $key + 1;
+            // dd($key);
+            $templateProcessor->setValue("no#$i", $i);
+            // dd($list->id_dasar);
+
+            // $skpd = SKPD::find($list->skpd)->first();
+
+            $templateProcessor->setValue("tujuan#$i", $list->kepada);
+            $templateProcessor->setValue("tanggal#$i", $list->tanggal);
+            $templateProcessor->setValue("nomor_lengkap#$i", $list->nomor_lengkap);
+            $templateProcessor->setValue("perihal#$i", $list->perihal);
+            $templateProcessor->setValue("skpd#$i", $list->skpd_nama);
+
+        }
+
+        $filename =  "surat keluar Kab. Tabalong Tahun " . $tahun;
+        $templateProcessor->saveAs($filename .  '.docx');
+
+
+        // return response()->json(['code'=>200, 'status' => 'Nota Dinas berhasil dicatat ke Buku Surat Keluar'], 200);
+
+        return response()->download($filename . '.docx');
     }
 }
