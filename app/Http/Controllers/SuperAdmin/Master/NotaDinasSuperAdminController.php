@@ -409,6 +409,9 @@ class NotaDinasSuperAdminController extends Controller
             if (!empty($request['notadinas_kepada_edit2'])) {
                 $db->kepada = $request['notadinas_kepada_edit2'];
 
+                $pejabat = Jabatan::where('jabatan_id', $request['notadinas_kepada_edit2'])->first();
+
+                $suratkeluar->kepada = $pejabat->jabatan_nama;
             }
 
             // if (!empty($request['notadinas_skpd'])) {
@@ -418,6 +421,8 @@ class NotaDinasSuperAdminController extends Controller
 
             if (!empty($request['notadinas_disposisi1_edit2'])) {
                 $db->disposisi1 = $request['notadinas_disposisi1_edit2'];
+
+
             }
 
             if (!empty($request['notadinas_disposisi2_edit2'])) {
