@@ -28,7 +28,7 @@
                             <label class="dari"></label>
 
                             <div class="input-group mb-1">
-                              <select class="form-control select-jabatan" name="notadinas_dari" id="notadinas_dari">
+                              <select class="form-control select-pegawai" name="notadinas_dari" id="notadinas_dari">
                               </select>
                             </div><br>
 
@@ -40,6 +40,12 @@
                             </div><br>
 
 
+                            <label id="label_pembuat"></label><br>
+                            <label class="pembuat"></label>
+                            <div class="input-group mb-1">
+                              <select class="form-control select-pegawai" name="notadinas_pembuat" id="notadinas_pembuat">
+                              </select>
+                            </div><br>
 
                           <label for="notadinas_tanggal">Tanggal Surat</label>
                           <input class="form-control" type="date" id="notadinas_tanggal" name="notadinas_tanggal"><br>
@@ -54,9 +60,10 @@
                             @endforeach
                         </select><br>
 
-                        <label>Format Nomor Surat</label>
-                          <input type="text" class="form-control" name="notadinas_format" id="notadinas_format">
-                          <label>Contoh: /BKPP/DASI.KHP.1/823/12/2021 (tanpa Nomor Surat)</label><br><br>
+
+                            <label>Format Nomor Surat</label><br>
+                            <input type="text"  name="notadinas_format" id="notadinas_format" class="form-control">
+                          <label>Contoh: /BKPP/DASI.KHP.1/823/05/2021 (tanpa Nomor Surat)</label><br><br>
 
 
                           <label>Lampiran</label>

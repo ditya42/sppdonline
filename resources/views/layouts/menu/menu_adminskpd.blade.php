@@ -13,7 +13,7 @@
   {{-- <li class="@yield('active-bidang')"><a href="{{ route('bidang.index') }}">Bidang</a></li> --}}
   <li class="@yield('active-jenissurat')"><a class="" href="{{ route('adminskpd.jenissurat.index') }}">Jenis Surat</a></li>
   <li class="@yield('active-dasarsurat')"><a class="" href="{{ route('adminskpd.dasarsurat.index') }}">Dasar Surat</a></li>
-  <li class="@yield('active-suratkeluar')"><a class="" href="{{ route('adminskpdsuratkeluar.suratkeluar.index') }}">Surat Keluar</a></li>
+  <li class="@yield('active-suratkeluar')"><a class="" href="{{ route('adminskpdsuratkeluar.suratkeluar.index') }}">Buku Surat Keluar</a></li>
   <li class="@yield('active-masternotadinas')"><a class="" href="{{ route('adminskpdmaster.masternotadinas.index') }}">Nota Dinas Perjalanan</a></li>
 </ul>
 </li>

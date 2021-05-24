@@ -14,7 +14,7 @@
     <li class="@yield('active-angkutan')"><a class="" href="{{ route('jenisangkutan.index') }}">Jenis Angkutan</a></li>
     <li class="@yield('active-jenissurat')"><a class="" href="{{ route('superadmin.jenissurat.index') }}">Jenis Surat</a></li>
     <li class="@yield('active-dasarsurat')"><a class="" href="{{ route('superadmin.dasarsurat.index') }}">Dasar Surat</a></li>
-    <li class="@yield('active-suratkeluar')"><a class="" href="{{ route('superadminsuratkeluar.suratkeluar.index') }}">Surat Keluar</a></li>
+    <li class="@yield('active-suratkeluar')"><a class="" href="{{ route('superadminsuratkeluar.suratkeluar.index') }}">Buku Surat Keluar</a></li>
     <li class="@yield('active-notadinas')"><a class="" href="{{ route('superadmin.notadinas.index') }}">Nota Dinas Perjalanan</a></li>
   </ul>
 </li>

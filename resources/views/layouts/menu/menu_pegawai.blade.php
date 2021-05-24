@@ -13,7 +13,7 @@
 
     <li class="@yield('active-jenissurat')"><a class="" href="{{ route('pegawai.jenissurat.index') }}">Jenis Surat</a></li>
     <li class="@yield('active-dasarsurat')"><a class="" href="{{ route('pegawai.dasarsurat.index') }}">Dasar Surat</a></li>
-    <li class="@yield('active-suratkeluar')"><a class="" href="{{ route('pegawaisuratkeluar.index') }}">Surat Keluar</a></li>
+    <li class="@yield('active-suratkeluar')"><a class="" href="{{ route('pegawaisuratkeluar.index') }}">Buku Surat Keluar</a></li>
   </ul>
   </li>
 

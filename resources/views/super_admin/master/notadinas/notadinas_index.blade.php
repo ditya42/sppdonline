@@ -117,6 +117,7 @@
             $('.kepada').text('Tujuan Surat');
             $('.dari').text('Dari');
             $('.skpd').text('SKPD');
+            $('.pembuat').text('Pembuat Nota Dinas');
             $('.disposisi1').text('Pejabat Pemberi Disposisi');
             $('.disposisi2').text('Pejabat Pemberi Disposisi');
             $('#simpan').show();
@@ -265,8 +266,11 @@
                 $('#label_kepada').text('Tujuan Surat : '+data.jabatan_kepada);
                 $('.kepada').text('Ganti Tujuan Surat');
 
-                $('#label_dari').text('Pengirim Surat: '+data.jabatan_dari);
+                $('#label_dari').text('Pengirim Surat: '+data.nama_dari);
                 $('.dari').text('Ganti Pengirim Surat');
+
+                $('#label_pembuat').text('Pembuat Surat: '+data.nama_pembuat);
+                $('.pembuat').text('Ganti Pembuat Surat');
 
                 $('#label_skpd').text('SKPD: '+data.skpd_nama);
                 $('.skpd').text('Ganti SKPD');
@@ -281,7 +285,8 @@
                 $('#id').val(data.id);
                 $('#notadinas_kepada').val(data.jabatan_kepada).trigger('change');
                 $('#notadinas_dari').val(data.jabatan_dari).trigger('change');
-                $('#notadinas_skpd').val(data.jabatan_dari).trigger('change');
+                $('#notadinas_skpd').val(data.skpd_nama).trigger('change');
+                $('#notadinas_pembuat').val(data.nama_pembuat).trigger('change');
 
                 $('#notadinas_disposisi1').val(data.jabatan_disposisi1).trigger('change');
                 $('#notadinas_disposisi2').val(data.jabatan_disposisi2).trigger('change');
@@ -325,7 +330,7 @@
                 $('#label_kepada_edit2').text('Tujuan Surat : '+data.jabatan_kepada);
                 $('.kepada_edit2').text('Ganti Tujuan Surat');
 
-                $('#label_dari_edit2').text('Pengirim Surat: '+data.jabatan_dari);
+                $('#label_dari_edit2').text('Pengirim Surat: '+data.nama_dari);
                 $('.dari_edit2').text('Ganti Pengirim Surat');
 
                 $('#label_skpd_edit2').text('SKPD: '+data.skpd_nama);
@@ -383,7 +388,7 @@
 
                 $('#label_kepada_show').text('Tujuan Surat : '+data.jabatan_kepada);
 
-                $('#label_dari_show').text('Pengirim Surat: '+data.jabatan_dari);
+                $('#label_dari_show').text('Pengirim Surat: '+data.nama_dari);
 
                 $('#label_skpd_show').text('SKPD: '+data.skpd_nama);
 

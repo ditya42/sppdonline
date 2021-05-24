@@ -25,10 +25,14 @@ class NotaDinasSuperAdminController extends Controller
 {
     public function index()
     {
+        $month =  Carbon::now()->format('m');
+        $year = Carbon::now()->format('Y');
         $jenissurat = JenisSurat::all();
         return view('super_admin.master.notadinas.notadinas_index', [
             'JsValidator' => JsValidator::make($this->rulesCreate(), $this->messages()),
             'jenissurat' => $jenissurat,
+            'month' => $month,
+            'year' => $year,
         ]);
     }
 
@@ -163,7 +167,7 @@ class NotaDinasSuperAdminController extends Controller
             'notadinas_tanggalsampai' =>'required',
             'notadinas_anggaran' =>'required',
             'notadinas_disposisi1' =>'required_without:id',
-            'notadinas_skpd' =>'required',
+            'notadinas_skpd' =>'required_without:id',
 
         ];
 
@@ -260,7 +264,15 @@ class NotaDinasSuperAdminController extends Controller
             $db->tanggal_sampai = $request['notadinas_tanggalsampai'];
             $db->anggaran = $request['notadinas_anggaran'];
             $db->penandatangan = $request['notadinas_dari'];
-            $db->pembuat = $user->pegawai_id;
+
+            if($request['notadinas_pembuat'] == null){
+                $db->pembuat = $user->pegawai_id;
+
+            }else{
+                $db->pembuat =  $request['notadinas_pembuat'];
+
+            }
+
             $db->skpd = $request['notadinas_skpd'];
             $db->tahun = $date;
             $db->kepada = $request['notadinas_kepada'];
@@ -282,9 +294,11 @@ class NotaDinasSuperAdminController extends Controller
             ->leftJoin('tb_jabatan AS C','C.jabatan_id','=','sppd_notadinas.disposisi2')
             ->leftJoin('tb_jabatan AS D','D.jabatan_id','=','sppd_notadinas.penandatangan')
             ->leftJoin('tb_skpd AS E', 'E.skpd_id' ,'=', 'sppd_notadinas.skpd')
+            ->leftJoin('tb_pegawai AS F','F.pegawai_id','=','sppd_notadinas.penandatangan')
+            ->leftJoin('tb_pegawai AS G','G.pegawai_id','=','sppd_notadinas.pembuat')
 
             ->select('A.jabatan_nama as jabatan_kepada', 'B.jabatan_nama as jabatan_disposisi1', 'C.jabatan_nama as jabatan_disposisi2','D.jabatan_nama as jabatan_dari', 'id', 'kepada', 'tanggal_surat', 'jenis_surat'
-            ,'format_nomor','lampiran','hal','isi','tujuan','tanggal_dari','tanggal_sampai','anggaran', 'skpd_nama')
+            ,'format_nomor','lampiran','hal','isi','tujuan','tanggal_dari','tanggal_sampai','anggaran', 'skpd_nama', 'F.pegawai_nama as nama_dari', 'G.pegawai_nama as nama_pembuat',  'E.skpd_nama as skpd_nama')
 
             // ->leftJoin('tb_jabatan AS B','sppd_notadinas.disposisi1','=','B.jabatan_id')
             // ->leftJoin('tb_jabatan AS C','sppd_notadinas.disposisi2','=','C.jabatan_id')
@@ -297,6 +311,8 @@ class NotaDinasSuperAdminController extends Controller
 
         // dd($db);
         echo json_encode($db);
+
+
     }
 
     public function edit2($id)
@@ -308,9 +324,10 @@ class NotaDinasSuperAdminController extends Controller
             ->leftJoin('tb_jabatan AS C','C.jabatan_id','=','sppd_notadinas.disposisi2')
             ->leftJoin('tb_jabatan AS D','D.jabatan_id','=','sppd_notadinas.penandatangan')
             ->leftJoin('tb_skpd AS E', 'E.skpd_id' ,'=', 'sppd_notadinas.skpd')
+            ->leftJoin('tb_pegawai AS F','F.pegawai_id','=','sppd_notadinas.penandatangan')
 
             ->select('A.jabatan_nama as jabatan_kepada', 'B.jabatan_nama as jabatan_disposisi1', 'C.jabatan_nama as jabatan_disposisi2','D.jabatan_nama as jabatan_dari', 'id', 'kepada', 'tanggal_surat', 'jenis_surat'
-            ,'format_nomor','lampiran','hal','isi','tujuan','tanggal_dari','tanggal_sampai','anggaran', 'skpd_nama')
+            ,'format_nomor','lampiran','hal','isi','tujuan','tanggal_dari','tanggal_sampai','anggaran', 'skpd_nama', 'F.pegawai_nama as nama_dari')
 
             // ->leftJoin('tb_jabatan AS B','sppd_notadinas.disposisi1','=','B.jabatan_id')
             // ->leftJoin('tb_jabatan AS C','sppd_notadinas.disposisi2','=','C.jabatan_id')
@@ -341,7 +358,7 @@ class NotaDinasSuperAdminController extends Controller
             $db->tanggal_dari = $request['notadinas_tanggaldari'];
             $db->tanggal_sampai = $request['notadinas_tanggalsampai'];
             $db->anggaran = $request['notadinas_anggaran'];
-            $db->pembuat = $user->pegawai_id;
+            // $db->pembuat = $user->pegawai_id;
 
             $db->tahun = $date;
 
@@ -354,6 +371,10 @@ class NotaDinasSuperAdminController extends Controller
 
             }
 
+            if (!empty($request['notadinas_pembuat'])) {
+                $db->pembuat = $request['notadinas_pembuat'];
+
+            }
             if (!empty($request['notadinas_skpd'])) {
                 $db->skpd = $request['notadinas_skpd'];
 
