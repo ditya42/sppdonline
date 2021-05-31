@@ -28,10 +28,14 @@ class NotaDinasAdminSKPDController extends Controller
 {
     public function index()
     {
+        $month =  Carbon::now()->format('m');
+        $year = Carbon::now()->format('Y');
         $jenissurat = JenisSurat::all();
         return view('admin_skpd.surat.notadinas.notadinas_index', [
             'JsValidator' => JsValidator::make($this->rulesCreate(), $this->messages()),
             'jenissurat' => $jenissurat,
+            'month' => $month,
+            'year' => $year,
         ]);
     }
 
@@ -183,11 +187,12 @@ class NotaDinasAdminSKPDController extends Controller
         //
         $user = auth()->user();
         $date = Carbon::now()->format('Y');
+        $month =  Carbon::now()->format('m');
 
             $db = new NotaDinas;
             $db->tanggal_surat = $request['notadinas_tanggal'];
             $db->jenis_surat = $request['notadinas_jenissurat'];
-            $db->format_nomor = $request['notadinas_format'];
+            $db->format_nomor = "/" . $request['notadinas_format']. "/".$month."/".$date;
             $db->lampiran = $request['notadinas_lampiran'];
             $db->hal = $request['notadinas_hal'];
             $db->isi = $request['notadinas_isi'];
@@ -240,37 +245,37 @@ class NotaDinasAdminSKPDController extends Controller
         $user = auth()->user();
         $date = Carbon::now()->format('Y');
 
-            $db = NotaDinas::find($id);
-            $db->tanggal_surat = $request['notadinas_tanggal'];
-            $db->jenis_surat = $request['notadinas_jenissurat'];
-            $db->format_nomor = $request['notadinas_format'];
-            $db->lampiran = $request['notadinas_lampiran'];
-            $db->hal = $request['notadinas_hal'];
-            $db->isi = $request['notadinas_isi'];
-            $db->tujuan = $request['notadinas_tujuan'];
-            $db->tanggal_dari = $request['notadinas_tanggaldari'];
-            $db->tanggal_sampai = $request['notadinas_tanggalsampai'];
-            $db->anggaran = $request['notadinas_anggaran'];
-            $db->pembuat = $user->pegawai_id;
-            $db->skpd = $user->skpd_id;
-            $db->tahun = $date;
+        $db = NotaDinas::find($id);
+        $db->tanggal_surat = $request['notadinasedit_tanggal'];
+        $db->jenis_surat = $request['notadinasedit_jenissurat'];
+        $db->format_nomor = $request['notadinasedit_format'];
+        $db->lampiran = $request['notadinasedit_lampiran'];
+        $db->hal = $request['notadinasedit_hal'];
+        $db->isi = $request['notadinasedit_isi'];
+        $db->tujuan = $request['notadinasedit_tujuan'];
+        $db->tanggal_dari = $request['notadinasedit_tanggaldari'];
+        $db->tanggal_sampai = $request['notadinasedit_tanggalsampai'];
+        $db->anggaran = $request['notadinasedit_anggaran'];
+        $db->pembuat = $user->pegawai_id;
+        $db->skpd = $user->skpd_id;
+        $db->tahun = $date;
 
-            if (!empty($request['notadinas_dari'])) {
-                $db->penandatangan = $request['notadinas_dari'];
-            }
+        if (!empty($request['notadinasedit_dari'])) {
+            $db->penandatangan = $request['notadinasedit_dari'];
+        }
 
-            if (!empty($request['notadinas_kepada'])) {
-                $db->kepada = $request['notadinas_kepada'];
+        if (!empty($request['notadinasedit_kepada'])) {
+            $db->kepada = $request['notadinasedit_kepada'];
 
-            }
+        }
 
-            if (!empty($request['notadinas_disposisi1'])) {
-                $db->disposisi1 = $request['notadinas_disposisi1'];
-            }
+        if (!empty($request['notadinasedit_disposisi1'])) {
+            $db->disposisi1 = $request['notadinasedit_disposisi1'];
+        }
 
-            if (!empty($request['notadinas_disposisi2'])) {
-                $db->disposisi2 = $request['notadinas_disposisi2'];
-            }
+        if (!empty($request['notadinasedit_disposisi2'])) {
+            $db->disposisi2 = $request['notadinasedit_disposisi2'];
+        }
 
 
             $db->update();

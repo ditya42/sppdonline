@@ -14,7 +14,7 @@
 
                         <div class="col-md-12">
 
-                            <label id="label_kepada"></label><br>
+
                             <label class="kepada"></label>
                             <div class="input-group mb-1">
                               <select class="form-control select-jabatan" name="notadinas_kepada" id="notadinas_kepada">
@@ -22,7 +22,7 @@
                             </div><br>
 
 
-                            <label id="label_dari"></label><br>
+
                             <label class="dari"></label>
 
                             <div class="input-group mb-1">
@@ -45,9 +45,9 @@
                             @endforeach
                         </select><br>
 
-                        <label>Format Nomor Surat</label>
-                          <input type="text" class="form-control" name="notadinas_format" id="notadinas_format">
-                          <label>Contoh: /BKPP/DASI.KHP.1/823/12/2021 (tanpa Nomor Surat)</label><br><br>
+                        <label>Format Nomor Surat</label><br>
+                          / <input type="text" size="35" name="notadinas_format" id="notadinas_format"> / {{ $month }} / {{ $year }}
+                          <br><label>Contoh: BKPP/DASI.KHP.1/823 (tanpa Nomor Surat)</label><br><br>
 
 
                           <label>Lampiran</label>
@@ -71,14 +71,14 @@
                           <label>Anggaran yang dipakai</label>
                           ​<textarea id="notadinas_anggaran" name="notadinas_anggaran" rows="2" cols="53"></textarea><br><br>
 
-                          <label id="label_disposisi1"></label><br>
+
                           <label class="disposisi1"></label>
                             <div class="input-group mb-1">
                               <select class="form-control select-jabatan" name="notadinas_disposisi1" id="notadinas_disposisi1">
                               </select>
                             </div><br>
 
-                            <label id="label_disposisi2"></label><br>
+
                             <label class="disposisi2"></label>
 
                             <div class="input-group mb-1">

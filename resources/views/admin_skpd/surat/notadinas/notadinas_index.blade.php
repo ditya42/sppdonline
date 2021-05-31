@@ -82,6 +82,7 @@
                 </div>
             </div>
             @include('pegawai.notadinas.modal.modal_notadinas')
+            @include('pegawai.notadinas.modal.modal_notadinas_edit')
             @include('pegawai.notadinas.modal.modal_notadinasshow')
 
 
@@ -200,50 +201,91 @@
           });
         });
 
-          function editForm(id){
+        $(function() {
+          $('#modalnotadinasedit form').validator().on('submit', function(e) {
+              if(!e.isDefaultPrevented()) {
+                  $('#simpan_edit').hide();
+                  $('#loading_edit').show();
+                  var id = $('#id').val();
+                  if(save_method == "add") url = "{{ route('pegawai.notadinas.store') }}";
+                  else url = "notadinas/"+id;
+
+                  $.ajax({
+                  url : url,
+                  type : "POST",
+                  data : $('#modalnotadinasedit form').serialize(),
+                  success : function(data){
+                      if(data.code === 400) {
+                          toastr.error('Error', data.status);
+                          $('#modalnotadinasedit').modal('hide');
+
+                      }
+
+                      if(data.code === 200) {
+                          $('#modalnotadinasedit').modal('hide');
+                              toastr.success('Sukses', data.status, {
+                              onHidden: function () {
+                                  table.ajax.reload();
+                              }
+                          })
+
+                      }
+                  },
+                  error : function(){
+                      toastr.error('Gagal', 'Mohon Maaf Terjadi Kesalahan Pada Server');
+                      $('#modalnotadinasedit').modal('hide');
+
+                  }
+                  });
+                  return false;
+              }
+          });
+        });
+
+        function editForm(id){
             save_method = "edit";
-            $('#simpan').show();
-            $('#loading').hide();
+            $('#simpan_edit').show();
+            $('#loading_edit').hide();
             $('input[name=_method]').val('PATCH');
-            $('#modalnotadinas form')[0].reset();
+            $('#modalnotadinasedit form')[0].reset();
             $.ajax({
               url : "notadinas/"+id+"/edit",
               type : "GET",
               dataType : "JSON",
               success : function(data){
-                $('#modalnotadinas').modal('show');
+                $('#modalnotadinasedit').modal('show');
 
                 $('.title').text('Edit Pengajuan Nota Dinas');
 
-                $('#label_kepada').text('Tujuan Surat : '+data.jabatan_kepada);
-                $('.kepada').text('Ganti Tujuan Surat');
+                $('#label_kepada_edit').text('Tujuan Surat : '+data.jabatan_kepada);
+                $('.kepada_edit').text('Ganti Tujuan Surat');
 
-                $('#label_dari').text('Pengirim Surat: '+data.nama_dari);
-                $('.dari').text('Ganti Pengirim Surat');
+                $('#label_dari_edit').text('Pengirim Surat: '+data.nama_dari);
+                $('.dari_edit').text('Ganti Pengirim Surat');
 
-                $('#label_disposisi1').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi1);
-                $('.disposisi1').text('Ganti Pejabat Pemberi Disposisi');
+                $('#label_disposisi1_edit').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi1);
+                $('.disposisi1_edit').text('Ganti Pejabat Pemberi Disposisi');
 
-                $('#label_disposisi2').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi2);
-                $('.disposisi2').text('Ganti Pejabat Pemberi Disposisi');
+                $('#label_disposisi2_edit').text('Pejabat Pemberi Disposisi: '+data.jabatan_disposisi2);
+                $('.disposisi2_edit').text('Ganti Pejabat Pemberi Disposisi');
 
 
                 $('#id').val(data.id);
-                $('#notadinas_kepada').val(data.jabatan_kepada).trigger('change');
-                $('#notadinas_dari').val(data.jabatan_dari).trigger('change');
-                $('#notadinas_disposisi1').val(data.jabatan_disposisi1).trigger('change');
-                $('#notadinas_disposisi2').val(data.jabatan_disposisi2).trigger('change');
+                $('#notadinasedit_kepada').val(data.jabatan_kepada).trigger('change');
+                $('#notadinasedit_dari').val(data.jabatan_dari).trigger('change');
+                $('#notadinasedit_disposisi1').val(data.jabatan_disposisi1).trigger('change');
+                $('#notadinasedit_disposisi2').val(data.jabatan_disposisi2).trigger('change');
 
-                $('#notadinas_tanggal').val(data.tanggal_surat);
-                $('#notadinas_jenissurat').val(data.jenis_surat);
-                $('#notadinas_format').val(data.format_nomor);
-                $('#notadinas_lampiran').val(data.lampiran);
-                $('#notadinas_hal').val(data.hal);
-                $('#notadinas_isi').val(data.isi);
-                $('#notadinas_tujuan').val(data.tujuan);
-                $('#notadinas_tanggaldari').val(data.tanggal_dari);
-                $('#notadinas_tanggalsampai').val(data.tanggal_sampai);
-                $('#notadinas_anggaran').val(data.anggaran);
+                $('#notadinasedit_tanggal').val(data.tanggal_surat);
+                $('#notadinasedit_jenissurat').val(data.jenis_surat);
+                $('#notadinasedit_format').val(data.format_nomor);
+                $('#notadinasedit_lampiran').val(data.lampiran);
+                $('#notadinasedit_hal').val(data.hal);
+                $('#notadinasedit_isi').val(data.isi);
+                $('#notadinasedit_tujuan').val(data.tujuan);
+                $('#notadinasedit_tanggaldari').val(data.tanggal_dari);
+                $('#notadinasedit_tanggalsampai').val(data.tanggal_sampai);
+                $('#notadinasedit_anggaran').val(data.anggaran);
 
 
               },

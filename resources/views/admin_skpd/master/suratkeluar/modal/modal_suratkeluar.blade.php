@@ -38,9 +38,9 @@
                         </select>
                         <br>
 
-                        <label>Format Nomor Surat</label>
-                          <input type="text" class="form-control" name="suratkeluar_format" id="suratkeluar_format">
-                          <label>Contoh: /BKPP/DASI.KHP.1/823/12/2021 (tanpa Nomor Surat)</label><br><br>
+                        <label>Format Nomor Surat</label><br>
+                        / <input type="text" size="35" name="suratkeluar_format" id="suratkeluar_format"> / {{ $month }} / {{ $year }}
+                        <br><label>Contoh: BKPP/DASI.KHP.1/823 (tanpa Nomor Surat)</label><br><br>
 
                           <label>Hal</label>
                           ​<textarea id="suratkeluar_hal" name="suratkeluar_hal" rows="2" cols="53"></textarea><br>

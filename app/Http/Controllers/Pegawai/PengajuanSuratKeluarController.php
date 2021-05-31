@@ -26,10 +26,14 @@ class PengajuanSuratKeluarController extends Controller
 {
     public function index()
     {
+        $month =  Carbon::now()->format('m');
+        $year = Carbon::now()->format('Y');
         $jenissurat = JenisSurat::all();
         return view('pegawai.pengajuansuratkeluar.pengajuansuratkeluar_index', [
             'JsValidator' => JsValidator::make($this->rulesCreate(), $this->messages()),
             'jenissurat' => $jenissurat,
+            'month' => $month,
+            'year' => $year
         ]);
     }
 
@@ -130,11 +134,13 @@ class PengajuanSuratKeluarController extends Controller
         $year = Carbon::now()->format('Y');
         $user = auth()->user();
 
+        $month =  Carbon::now()->format('m');
+
 
             $db = new PengajuanSuratKeluar;
 
             $db->jenis_surat = $request['suratkeluar_jenissurat'];
-            $db->format_nomor = $request['suratkeluar_format'];
+            $db->format_nomor = "/".$request['suratkeluar_format']."/".$month."/".$year;
             $db->kepada = $request['suratkeluar_kepada'];
             $db->tanggal = $request['suratkeluar_tanggal'];
             $db->perihal = $request['suratkeluar_hal'];
@@ -171,11 +177,11 @@ class PengajuanSuratKeluarController extends Controller
         // dd($db);
 
 
-            $db->jenis_surat = $request['suratkeluar_jenissurat'];
-            $db->format_nomor = $request['suratkeluar_format'];
-            $db->kepada = $request['suratkeluar_kepada'];
-            $db->tanggal = $request['suratkeluar_tanggal'];
-            $db->perihal = $request['suratkeluar_hal'];
+            $db->jenis_surat = $request['suratkeluaredit_jenissurat'];
+            $db->format_nomor = $request['suratkeluaredit_format'];
+            $db->kepada = $request['suratkeluaredit_kepada'];
+            $db->tanggal = $request['suratkeluaredit_tanggal'];
+            $db->perihal = $request['suratkeluaredit_hal'];
             $db->tahun = $year;
             $db->skpd = $user->skpd_id;
             $db->pembuat = $user->pegawai_id;

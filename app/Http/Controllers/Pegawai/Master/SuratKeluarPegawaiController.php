@@ -9,6 +9,7 @@ use DB;
 use Yajra\Datatables\DataTables;
 use Alert;
 use App\Model\SuratKeluar;
+use Illuminate\Support\Carbon;
 use JsValidator;
 
 class SuratKeluarPegawaiController extends Controller
@@ -23,7 +24,8 @@ class SuratKeluarPegawaiController extends Controller
     public function data()
     {
         $user = auth()->user();
-        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id);
+        $year = Carbon::now()->format('Y');
+        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id)->where('tahun', $year);
 
         // dd($query);
 

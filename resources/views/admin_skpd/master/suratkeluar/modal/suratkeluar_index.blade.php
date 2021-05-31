@@ -20,8 +20,9 @@
                 <div class="col-12">
                         <div class="card">
                             <br>
-                            <a style="margin-left: 10px;"  data-toggle="modal" onclick="addform()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Surat Keluar</button></a>
-
+                            <a style="margin-left: 10px;"  data-toggle="modal" onclick="addform()"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Surat Keluar</button></a>
+                            <a href="{{ route('adminskpdsuratkeluar.trash') }}" style="margin-left: 10px;"  ><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Sampah</button></a>
+                            <a style="margin-left: 10px;"  ><button type="button" class="btn btn-warning" onclick="cetakform()"><i class="fa fa-print"></i> cetak</button></a>
                             <div class="table-responsive">
                                 <div class="body">
                                         <table class="table table-bordered table-hover js-basic-example dataTable table-custom" width="100%">
@@ -30,11 +31,9 @@
                                                     <th width="5">No.</th>
                                                     <th>Tujuan Surat Keluar</th>
                                                     <th>Tanggal Surat</th>
-                                                    <th>Jenis Surat</th>
-                                                    <th>Nomor</th>
-                                                    <th>Format Nomor</th>
-                                                    <th>Perihal</th>
 
+                                                    <th>Nomor Surat Keluar</th>
+                                                    <th>Perihal</th>
                                                     <th>Aksi</th>
 
 
@@ -46,29 +45,27 @@
                         </div>
                 </div>
             </div>
-
-
             <!-- Modal Dialogs ========= -->
-            @include('pegawai.pengajuansuratkeluar.modal.modal_suratkeluar')
-            @include('pegawai.pengajuansuratkeluar.modal.modal_suratkeluar_edit')
-            @include('pegawai.pengajuansuratkeluar.modal.modal_suratkeluarshow')
+            @include('admin_skpd.master.suratkeluar.modal.modal_suratkeluar')
+            @include('admin_skpd.master.suratkeluar.modal.modal_cetak')
 
 
         </div>
     </div>
 @endsection
 
-@section('active-surat')
+@section('active-master')
   active
 @endsection
 
-@section('active-suratkeluarpengajuan')
+@section('active-suratkeluar')
   active
 @endsection
 
 @section('script')
     <script src="{{ url('vendor/jsvalidation/js/jsvalidation.min.js' , false) }}" charset="utf-8"></script>
     {!! $JsValidator->selector('#form-input') !!}
+    {!! $JsValidatorcetak->selector('#form-cetak') !!}
 
 
     <script>
@@ -86,6 +83,17 @@
             $('.kepada').text('Tujuan Surat');
             $('#simpan').show();
             $('#loading').hide();
+        }
+
+        function cetakform() {
+
+            $('input[name=_method]').val('POST');
+            $('#modalcetak').modal('show');
+
+            $('#modalcetak form')[0].reset();
+
+            $('#cetak').show();
+            $('#loadingcetak').hide();
         }
 
         $.fn.dataTable.render.moment = function ( from, to, locale ) {
@@ -116,14 +124,13 @@
           table = $('.table').DataTable({
               processing: true,
               serverSide: true,
-              ajax: '{!! route('pengajuansuratkeluar.data') !!}',
+              ajax: '{!! route('adminskpdsuratkeluar.data') !!}',
               columns: [
                   { data: 'DT_RowIndex', orderable: false, searchable: false},
                   { data: 'kepada' },
                   { data: 'tanggal', render: $.fn.dataTable.render.moment( 'DD-MM-YYYY' ) },
-                  { data: 'kode_surat' },
-                  { data: 'nomor' },
-                  { data: 'format_nomor' },
+                //   { data: 'nomor' },
+                  { data: 'nomor_lengkap' },
                   { data: 'perihal' },
 
                   { data: 'action', actions: 'actions', orderable: false, searchable: false }
@@ -137,8 +144,8 @@
                   $('#simpan').hide();
                   $('#loading').show();
                   var id = $('#id').val();
-                  if(save_method == "add") url = "{{ route('pengajuansuratkeluar.store') }}";
-                  else url = "pengajuansuratkeluar/"+id;
+                  if(save_method == "add") url = "{{ route('adminskpdsuratkeluar.suratkeluar.store') }}";
+                  else url = "suratkeluar/"+id;
 
                   $.ajax({
                   url : url,
@@ -173,105 +180,30 @@
         });
 
 
-        $(function() {
-          $('#modalsuratkeluaredit form').validator().on('submit', function(e) {
-              if(!e.isDefaultPrevented()) {
-                  $('#simpan_edit').hide();
-                  $('#loading_edit').show();
-                  var id = $('#id').val();
-                  if(save_method == "add") url = "{{ route('pengajuansuratkeluar.store') }}";
-                  else url = "pengajuansuratkeluar/"+id;
-
-                  $.ajax({
-                  url : url,
-                  type : "POST",
-                  data : $('#modalsuratkeluaredit form').serialize(),
-                  success : function(data){
-                      if(data.code === 400) {
-                          toastr.error('Error', data.status);
-                          $('#modalsuratkeluaredit').modal('hide');
-
-                      }
-
-                      if(data.code === 200) {
-                          $('#modalsuratkeluaredit').modal('hide');
-                              toastr.success('Sukses', data.status, {
-                              onHidden: function () {
-                                  table.ajax.reload();
-                              }
-                          })
-
-                      }
-                  },
-                  error : function(){
-                      toastr.error('Gagal', 'Mohon Maaf Terjadi Kesalahan Pada Server');
-                      $('#modalsuratkeluaredit').modal('hide');
-
-                  }
-                  });
-                  return false;
-              }
-          });
-        });
-
 
 
           function editForm(id){
             save_method = "edit";
-            $('#simpan_edit').show();
-            $('#loading_edit').hide();
+            $('#simpan').show();
+            $('#loading').hide();
             $('input[name=_method]').val('PATCH');
-            $('#modalsuratkeluaredit form')[0].reset();
+            $('#modalsuratkeluar form')[0].reset();
             $.ajax({
-              url : "pengajuansuratkeluar/"+id+"/edit",
+              url : "suratkeluar/"+id+"/edit",
               type : "GET",
               dataType : "JSON",
               success : function(data){
-                $('#modalsuratkeluaredit').modal('show');
-                $('.kepada').text('Tujuan Surat');
+                $('#modalsuratkeluar').modal('show');
+
                 $('.title').text('Edit Surat Keluar');
 
-                $('#id').val(data.draftsuratkeluar_id);
-                $('#suratkeluaredit_kepada').val(data.kepada);
-                $('#suratkeluaredit_tanggal').val(data.tanggal);
-                $('#suratkeluaredit_tanggal').val(data.tanggal);
-                $('#suratkeluaredit_jenissurat').val(data.jenis_surat);
-                $('#suratkeluaredit_format').val(data.format_nomor);
-                $('#suratkeluaredit_hal').val(data.perihal);
-
-
-              },
-              error : function(){
-                toastr.error('Gagal', 'Mohon Maaf Terjadi Kesalahan Pada Server');
-              }
-            });
-          }
-
-
-
-          function showForm(id){
-            save_method = "edit";
-
-            $('#loading_show').hide();
-            $('input[name=_method]').val('PATCH');
-            $('#modalsuratkeluarshow form')[0].reset();
-            $.ajax({
-              url : "pengajuansuratkeluar/"+id+"/edit",
-              type : "GET",
-              dataType : "JSON",
-              success : function(data){
-                $('#modalsuratkeluarshow').modal('show');
-                $('.kepada_show').text('Tujuan Surat');
-                $('.title').text('Detail Surat Keluar');
-
-                $('#id_show').val(data.draftsuratkeluar_id);
-                $('#suratkeluar_kepada_show').val(data.kepada);
-                $('#suratkeluar_tanggal_show').val(data.tanggal);
-                $('#suratkeluar_tanggal_show').val(data.tanggal);
-                $('#suratkeluar_jenissurat_show').val(data.jenis_surat);
-                $('#suratkeluar_format_show').val(data.format_nomor);
-                $('#suratkeluar_hal_show').val(data.perihal);
-
+                $('#id').val(data.id);
+                $('#suratkeluar_kepada').val(data.kepada);
+                $('#suratkeluar_tanggal').val(data.tanggal);
+                $('#suratkeluar_tanggal').val(data.tanggal);
+                $('#suratkeluar_jenissurat').val(data.jenis_surat);
+                $('#suratkeluar_format').val(data.format_nomor);
+                $('#suratkeluar_hal').val(data.perihal);
 
               },
               error : function(){
@@ -294,7 +226,7 @@
       .then((willDelete) => {
         if (willDelete.value) {
             $.ajax({
-            url : "pengajuansuratkeluar/"+id,
+            url : "suratkeluar/"+id,
             type : "POST",
             data: {
                 "_method" : "DELETE",
@@ -312,57 +244,6 @@
           });
         } else {
           swal("Batal di hapus");
-        }
-      });
-    }
-
-
-
-    function setujui(id) {
-      swal({
-        title: "Apakah Surat Keluar Ini Sudah Disetujui dan Di Tanda Tangani Pimpinan?",
-        // text: "Sudah Disetujui dan Di?",
-        icon: "warning",
-        confirmButtonText: 'Ya',
-        showCancelButton: true,
-
-
-        dangerMode: true,
-      })
-      .then((terima) => {
-        if (terima.value) {
-            $.ajax({
-            url : "pengajuansuratkeluar/setujui/"+id,
-            type : "POST",
-            data: {
-                "_method" : "GET",
-                "_token": "{{ csrf_token() }}"
-            },
-            success : function(data){
-                if(data.code === 400) {
-                    swal(data.status);
-                            table.ajax.reload();
-
-                      }
-
-                if(data.code === 200) {
-                    swal(data.status);
-                            table.ajax.reload();
-
-                      }
-
-
-            //   swal("Nota Dinas Berhasil Didaftarkan", {
-            //     icon: "success",
-            //   });
-            //   table.ajax.reload();
-            },
-            error : function() {
-              swal("Tidak Dapat Didaftarkan");
-            }
-          });
-        } else {
-          swal("Batal di Daftarkan");
         }
       });
     }

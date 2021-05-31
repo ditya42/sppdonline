@@ -21,11 +21,15 @@ class SuratKeluarAdminSKPDController extends Controller
 {
     public function index()
     {
+        $month =  Carbon::now()->format('m');
+        $year = Carbon::now()->format('Y');
         $jenissurat = JenisSurat::all();
         return view('admin_skpd.master.suratkeluar.suratkeluar_index', [
             'JsValidator' => JsValidator::make($this->rulesCreate(), $this->messages()),
             'JsValidatorcetak' => JsValidator::make($this->rulesCetak(), $this->messagesCetak()),
             'jenissurat' => $jenissurat,
+            'month' => $month,
+            'year' => $year
         ]);
     }
 
@@ -40,8 +44,9 @@ class SuratKeluarAdminSKPDController extends Controller
     public function data()
     {
         $user = auth()->user();
+        $year = Carbon::now()->format('Y');
 
-        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id);
+        $query = SuratKeluar::orderBy('created_at','desc')->where('skpd', $user->skpd_id)->where('tahun', $year);
 
 
 
@@ -166,6 +171,7 @@ class SuratKeluarAdminSKPDController extends Controller
     {
         $year = Carbon::now()->format('Y');
         $user = auth()->user();
+        $month =  Carbon::now()->format('m');
 
         $cek = DB::table('sppd_suratkeluar')
             ->where('tahun', '=', $year)
@@ -177,7 +183,7 @@ class SuratKeluarAdminSKPDController extends Controller
 
         $kodesurat = JenisSurat::where('jenissurat_id',$jenissurat)->first();
 
-        $format_nomor = $request['suratkeluar_format'];
+        $format_nomor = "/".$request['suratkeluar_format']."/".$month."/".$year;
 
         // $tanggal = date("d-m-Y", strtotime($request['suratkeluar_tanggal']))
 
