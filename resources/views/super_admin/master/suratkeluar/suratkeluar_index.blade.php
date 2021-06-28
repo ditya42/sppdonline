@@ -47,7 +47,7 @@
                 </div>
             </div>
             <!-- Modal Dialogs ========= -->
-            @include('admin_skpd.master.suratkeluar.modal.modal_suratkeluar')
+            @include('super_admin.master.suratkeluar.modal.modal_suratkeluar')
             @include('super_admin.master.suratkeluar.modal.modal_cetak')
 
 
